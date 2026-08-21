@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Personal Site | AI & Build</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+:root{
+  --bg:#0f141c;
+  --bg-card:#181e28;
+  --text:#d8e2ec;
+  --muted:#8899aa;
+  --accent:#4cc9e8;
+  --accent-dim:#2b788c;
+  --border:#27303f;
+}
+body{
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans SC",sans‑serif;
+  background-color:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+  max-width:720px;
+  margin:0 auto;
+  padding:48px 24px 64px;
+}
+
+/* Terminal Header */
+.terminal{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:20px 22px;
+  margin-bottom:60px;
+  font-family:"JetBrains Mono",Consolas,Monaco,monospace;
+}
+.terminal-prompt{color:var(--accent);}
+.terminal-output{margin-top:8px;color:var(--text);min-height:24px;}
+.cursor{display:inline-block;width:8px;height:18px;background-color:var(--accent);animation:blink 1s steps(2,start) infinite;vertical-align:text-bottom;}
+@keyframes blink{to{visibility:hidden;}}
+
+section{margin-bottom:64px;}
+h2{
+  font-size:1.35rem;
+  color:#cbd8e6;
+  margin-bottom:24px;
+  letter-spacing:.4px;
+  border-left:3px solid var(--accent-dim);
+  padding-left:12px;
+}
+
+/* Interview timeline Q&A */
+.dialog-block{margin-bottom:22px;}
+.q{
+  color:var(--muted);
+  padding-left:10px;
+  border-left:2px solid #344152;
+  margin-bottom:6px;
+}
+.a{
+  padding-left:10px;
+  border-left:2px solid var(--accent-dim);
+}
+
+/* Quote block */
+.quote{
+  padding:32px 20px;
+  text-align:center;
+  font-size:1.25rem;
+  color:#b8d4e8;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  margin:70px 0;
+}
+
+/* What I Do cards */
+.do-grid{display:grid;gap:18px;}
+.do-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:22px;
+}
+.do-card h3{color:var(--accent);margin-bottom:8px;font-size:1.1rem;}
+.do-card p{color:var(--muted);margin-bottom:14px;font-size:.96rem;}
+.btn{
+  display:inline-block;
+  padding:7px 14px;
+  border:1px solid var(--accent-dim);
+  color:var(--accent);
+  border-radius:6px;
+  text-decoration:none;
+  font-size:.9rem;
+  transition:.2s ease;
+}
+.btn:hover{background-color:#1f2b38;border-color:var(--accent);}
+
+/* Collections grid */
+.collections-grid{
+  display:grid;
+  grid-template-columns:repeat(auto‑fit,minmax(220px,1fr));
+  gap:16px;
+}
+.collection-item{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:18px;
+  text-decoration:none;
+  display:block;
+  transition:.2s;
+}
+.collection-item:hover{border‑color:var(--accent‑dim);transform:translateY(-2px);}
+.collection-item .icon{font-size:1.4rem;margin-bottom:6px;}
+.collection-item h4{color:var(--text);margin-bottom:4px;}
+.collection-item .desc{color:var(--muted);font-size:.9rem;}
+
+footer{
+  margin-top:90px;
+  padding-top:24px;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  font-size:.9rem;
+}
+.social-links{margin-top:12px;display:flex;gap:16px;}
+.social-links a{color:var(--accent);text-decoration:none;}
+.social-links a:hover{text-decoration:underline;}
+
+@media(max‑width:480px){
+  body{padding:32px 16px 48px;}
+  .collections-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- Terminal Header -->
+<div class="terminal">
+  <div class="terminal-line">
+    <span class="terminal-prompt">user@workspace ~ % $ whoami</span>
+  </div>
+  <div class="terminal-output" id="typeText"></div>
+</div>
+
+<!-- My Journey -->
+<section>
+  <h2>My Journey</h2>
+  <div class="dialog-block">
+    <div class="q">访谈者：讲讲你的成长路径吧？</div>
+    <div class="a">好，从求学阶段开始说起。</div>
+  </div>
+  <div class="dialog-block">
+    <div class="q">早期教育与专业出身？</div>
+    <div class="a">本科就读工科相关专业，打下系统思维、架构拆解的底子。习惯把复杂问题拆解成可落地模块，这套思维一直延续到现在做AI项目。</div>
+  </div>
+  <div class="dialog-block">
+    <div class="q">是什么契机接触AI领域？</div>
+    <div class="a">最早是做传统软件开发，看到大模型能力爆发，开始研究RAG、Agent、知识库落地；不满足只玩demo，更关心怎么在真实业务环境跑通。</div>
+  </div>
+  <div class="dialog-block">
+    <div class="q">从纯技术转向商业落地，中间发生了什么？</div>
+    <div class="a">踩过很多坑：漂亮原型上线就崩、文档质量差导致AI输出错乱、业务人员不会使用工具。慢慢意识到技术只是一半，另一半是业务流程、内容治理和人的协作。</div>
+  </div>
+  <div class="dialog-block">
+    <div class="q">什么时候走向独立开发？</div>
+    <div class="a">希望拥有完整创作自由度，把落地经验沉淀为项目、文档、工具；一边服务企业做AI咨询，一边做个人作品、写小说与随笔。技术和文字对我同等重要。</div>
+  </div>
+</section>
+
+<!-- Quote / Belief -->
+<div class="quote">
+  最好的AI落地，是让用户感受不到AI的存在
+</div>
+
+<!-- What I Do -->
+<section>
+  <h2>What I Do</h2>
+  <div class="do-grid">
+    <div class="do-card">
+      <h3>企业AI落地</h3>
+      <p>分享企业级AI应用的真实落地经验、架构思路和案例复盘。不是纯理论，是踩过坑之后的总结。</p>
+      <a href="#" class="btn">查看案例 →</a>
+    </div>
+    <div class="do-card">
+      <h3>小说创作</h3>
+      <p>自己写的故事。科幻、悬疑、现实题材，用文字构建另一个世界。</p>
+      <a href="#" class="btn">阅读故事 →</a>
+    </div>
+    <div class="do-card">
+      <h3>想法随笔</h3>
+      <p>对技术、产品、社会、人生的观察与思考。不定期更新。</p>
+      <a href="#" class="btn">浏览随笔 →</a>
+    </div>
+    <div class="do-card">
+      <h3>小玩意</h3>
+      <p>自己做的小游戏、小工具、小程序。好玩是第一生产力。</p>
+      <a href="#" class="btn">探索项目 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Collections -->
+<section>
+  <h2>Collections 内容合集</h2>
+  <div class="collections-grid">
+    <a href="#" class="collection-item">
+      <div class="icon">🏢</div>
+      <h4>企业AI落地案例</h4>
+      <div class="desc">知识库、RAG、业务Agent实战复盘</div>
+    </a>
+    <a href="#" class="collection-item">
+      <div class="icon">📖</div>
+      <h4>小说连载</h4>
+      <div class="desc">科幻 / 悬疑 / 现实向故事</div>
+    </a>
+    <a href="#" class="collection-item">
+      <div class="icon">✍️</div>
+      <h4>想法随笔</h4>
+      <div class="desc">技术、产品与生活思考</div>
+    </a>
+    <a href="#" class="collection-item">
+      <div class="icon">🎮</div>
+      <h4>小游戏 / 小工具</h4>
+      <div class="desc">独立开发的各类趣味作品</div>
+    </a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div>© 2026 [你的名字] · Built with AI & curiosity</div>
+  <div class="social-links">
+    <a href="#">GitHub</a>
+    <a href="#">个人博客</a>
+    <a href="#">公众号</a>
+    <a href="mailto:replace@example.com">Email</a>
+  </div>
+</footer>
+
+<script>
+// 打字机效果终端输出
+const outputEl = document.getElementById('typeText');
+const textContent = '在AI时代做企业落地的工程师｜写故事的人｜独立开发者';
+let idx = 0;
+function type(){
+  if(idx < textContent.length){
+    outputEl.innerText = textContent.slice(0,idx+1);
+    idx++;
+    setTimeout(type,65);
+  }else{
+    outputEl.innerHTML = textContent + '<span class="cursor"></span>';
+  }
+}
+window.addEventListener('DOMContentLoaded',type);
+</script>
+
+</body>
+</html>
