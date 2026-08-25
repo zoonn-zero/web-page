@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="100" viewBox="0 0 120 100">
+  <!-- 玻璃幕墙建筑 -->
+  <rect x="15" y="25" width="90" height="70" fill="#2c3e50"/>
+  <!-- 玻璃窗格 -->
+  <g fill="#5dade2" opacity="0.7">
+    <rect x="22" y="32" width="15" height="12"/>
+    <rect x="42" y="32" width="15" height="12"/>
+    <rect x="62" y="32" width="15" height="12"/>
+    <rect x="82" y="32" width="15" height="12"/>
+    <rect x="22" y="50" width="15" height="12"/>
+    <rect x="42" y="50" width="15" height="12"/>
+    <rect x="62" y="50" width="15" height="12"/>
+    <rect x="82" y="50" width="15" height="12"/>
+    <rect x="22" y="68" width="15" height="12"/>
+    <rect x="42" y="68" width="15" height="12"/>
+    <rect x="62" y="68" width="15" height="12"/>
+    <rect x="82" y="68" width="15" height="12"/>
+  </g>
+  <!-- 蓝色 LED 灯条 -->
+  <rect x="15" y="25" width="90" height="3" fill="#00d4ff"/>
+  <rect x="15" y="92" width="90" height="3" fill="#00d4ff"/>
+  <!-- 屋顶天线 -->
+  <rect x="57" y="5" width="6" height="22" fill="#7f8c8d"/>
+  <circle cx="60" cy="5" r="4" fill="#e74c3c"/>
+  <!-- 卫星接收器 -->
+  <ellipse cx="90" cy="18" rx="12" ry="4" fill="#95a5a6"/>
+  <rect x="88" y="18" width="4" height="8" fill="#7f8c8d"/>
+  <!-- 像素云朵 -->
+  <g fill="#ecf0f1">
+    <circle cx="25" cy="15" r="6"/>
+    <circle cx="33" cy="13" r="7"/>
+    <circle cx="42" cy="15" r="6"/>
+  </g>
+  <!-- 门 -->
+  <rect x="52" y="78" width="16" height="17" fill="#1a252f"/>
+  <rect x="54" y="80" width="12" height="13" fill="#3498db" opacity="0.5"/>
+</svg>
