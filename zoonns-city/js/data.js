@@ -1,0 +1,161 @@
+/* ==========================================================
+   ZOONN 之城 - 内容数据文件
+   后期维护只需修改这个文件里的数组即可
+   ========================================================== */
+
+// ===== 1. 编辑部 - 小说文章列表 =====
+// 新增文章：在数组中添加 {title, summary, date, content} 对象
+const articles = [
+  {
+    title: "第一篇：城市的黎明",
+    summary: "在这座永不入眠的城市里，每个人都有自己的故事。这是一个关于寻找与迷失的故事...",
+    date: "2025-03-15",
+    content: "（此处为文章正文内容，可后期补充）"
+  },
+  {
+    title: "第二篇：雨中的咖啡馆",
+    summary: "他总是在下雨的午后出现在街角的咖啡店，点一杯美式，坐整整一个下午...",
+    date: "2025-04-02",
+    content: "（此处为文章正文内容，可后期补充）"
+  },
+  {
+    title: "第三篇：月光下的秘密",
+    summary: "有些秘密，只有月亮知道。有些话，只能说给风听...",
+    date: "2025-05-20",
+    content: "（此处为文章正文内容，可后期补充）"
+  }
+];
+
+// ===== 2. AI公司 - 项目列表 =====
+// 新增项目：在数组中添加 {name, description, icon} 对象
+// icon 可以用 emoji 或者图片路径
+const projects = [
+  {
+    name: "机械产品外贸",
+    description: "利用 AI 优化供应链和客户开发，打造高效的机械产品外贸体系。",
+    icon: "⚙️"
+  },
+  {
+    name: "百货外贸",
+    description: "AI 选品 + 智能营销，让百货贸易更精准、更高效。",
+    icon: "📦"
+  },
+  {
+    name: "小程序开发",
+    description: "用 AI 加速开发流程，打造实用的微信小程序产品。",
+    icon: "📱"
+  }
+];
+
+// ===== 3. 游戏厅 - 游戏列表 =====
+// 新增游戏：在数组中添加 {name, screenshot, gameUrl, status} 对象
+// status: "developing" 开发中 / "available" 可玩
+const games = [
+  {
+    name: "像素冒险",
+    screenshot: "🎮",
+    gameUrl: "#",
+    status: "developing"
+  },
+  {
+    name: "城市消消乐",
+    screenshot: "🧩",
+    gameUrl: "#",
+    status: "developing"
+  },
+  {
+    name: "猫咪农场",
+    screenshot: "🐱",
+    gameUrl: "#",
+    status: "developing"
+  },
+  {
+    name: "AI 对战",
+    screenshot: "🤖",
+    gameUrl: "#",
+    status: "developing"
+  }
+];
+
+// ===== 4. 咖啡馆 - 杂志（视频总结）列表 =====
+// 新增杂志：在数组中添加 {title, summary, videoUrl, content, emoji} 对象
+const magazines = [
+  {
+    title: "AI 周刊 Vol.01",
+    summary: "本周最值得关注的 AI 工具和趋势",
+    videoUrl: "#",
+    emoji: "📘",
+    content: `
+      <h3>AI 周刊 Vol.01</h3>
+      <p>这是第一期杂志的视频总结文字内容。</p>
+      <p>你可以在这里写视频的核心要点、心得体会、推荐工具等等。</p>
+      <p>后期在 data.js 的 magazines 数组中新增条目即可上线新杂志。</p>
+    `
+  },
+  {
+    title: "创业笔记 #3",
+    summary: "做外贸的第三个月，我学到了什么",
+    videoUrl: "#",
+    emoji: "📓",
+    content: `
+      <h3>创业笔记 #3</h3>
+      <p>做外贸第三个月的心得体会...</p>
+      <p>（此处替换为你的视频总结内容）</p>
+    `
+  },
+  {
+    title: "读书分享",
+    summary: "《人类简史》给我的启发",
+    videoUrl: "#",
+    emoji: "📕",
+    content: `
+      <h3>读书分享：《人类简史》</h3>
+      <p>关于这本书的阅读心得...</p>
+      <p>（此处替换为你的视频总结内容）</p>
+    `
+  },
+  {
+    title: "生活记录",
+    summary: "一个人的城市生活",
+    videoUrl: "#",
+    emoji: "📗",
+    content: `
+      <h3>一个人的城市生活</h3>
+      <p>记录生活中的点滴...</p>
+      <p>（此处替换为你的视频总结内容）</p>
+    `
+  }
+];
+
+// ===== 5. 公园 - 去过的地方（中国地图标记） =====
+// 新增地点：在数组中添加 {city, x, y} 对象
+// x 和 y 是地图图片上的百分比位置（0-100），方便响应式
+const visitedPlaces = [
+  { city: "北京", x: 72, y: 30 },
+  { city: "上海", x: 78, y: 52 },
+  { city: "成都", x: 45, y: 55 },
+  { city: "广州", x: 65, y: 72 },
+  { city: "西安", x: 52, y: 42 }
+];
+
+// ===== 6. 信息亭 - 联系方式 =====
+// 直接修改 HTML 中的联系方式，或者在这里配置（可选）
+const contactInfo = {
+  email: "your-email@example.com",
+  xiaohongshu: "@zoonn",
+  github: "github.com/zoonn",
+  bilibili: "@zoonn的城市"
+};
+
+// ===== 7. 小猫对话气泡内容（随机） =====
+const catMessages = [
+  "喵~",
+  "喵呜~",
+  "喵？",
+  "喵喵~",
+  "呼噜呼噜...",
+  "你好呀~",
+  "要来摸摸我吗？",
+  "今天天气真好喵~",
+  "肚子饿了喵~"
+];
