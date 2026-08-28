@@ -85,27 +85,14 @@
     </div>
   </div>
 
-  <!-- 模态框 - 个人展板（美术馆） -->
+  <!-- 模态框 - 个人展板（手账画布） -->
   <div class="modal" id="modal-gallery">
-    <div class="modal-content gallery-style">
+    <div class="modal-content gallery-style gallery-board-style">
       <button class="modal-close" data-close="gallery">&times;</button>
       <h2 class="modal-title">🎨 个人展板</h2>
-      <div class="profile-section">
-        <div class="profile-avatar">
-          <img src="images/avatar-placeholder.svg" alt="个人照片">
-        </div>
-        <div class="profile-info">
-          <h3 class="profile-name">zoonn</h3>
-          <p class="profile-tag">AI 时代新人类</p>
-          <div class="profile-bio">
-            <p>此处可替换为你的个人经历介绍。</p>
-            <p>你可以在这里写你的故事、你的成长、你正在做的事情...</p>
-            <p>直接修改 HTML 中的这段文字即可更新。</p>
-          </div>
-        </div>
-      </div>
-      <div class="profile-slogan">
-        <span>me + AI = new me</span>
+      <p class="modal-subtitle">随手贴的一块手账板</p>
+      <div class="gallery-board" id="galleryBoard">
+        <!-- 展品由 JS 根据 data.js 的 galleryItems 数组生成 -->
       </div>
     </div>
   </div>
@@ -202,17 +189,22 @@
     </div>
   </div>
 
-  <!-- 杂志详情弹窗（内嵌） -->
-  <div class="modal" id="modal-magazine-detail">
-    ...
-  </div>
-
   <!-- 文章详情弹窗（内嵌） -->
   <div class="modal" id="modal-article-detail">
-    <div class="modal-content magazine-detail-style">
+    <div class="modal-content newspaper-style article-detail-style">
       <button class="modal-close" data-close="article-detail">&times;</button>
-      <div class="magazine-detail-content" id="articleDetailContent">
-        <!-- 文章详情由 JS 动态填充 -->
+      <div class="article-detail-content" id="articleDetailContent">
+        <!-- 文章正文将由 JS 动态填充 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 杂志详情弹窗（内嵌） -->
+  <div class="modal" id="modal-magazine-detail">
+    <div class="modal-content magazine-detail-style">
+      <button class="modal-close" data-close="magazine-detail">&times;</button>
+      <div class="magazine-detail-content" id="magazineDetailContent">
+        <!-- 杂志详情由 JS 动态填充 -->
       </div>
     </div>
   </div>
