@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initArcadeGrid();
   initMagazineRack();
   initMapMarkers();
+  initGalleryBoard();
   initCat();
   initMessageForm();
 });
@@ -85,14 +86,41 @@ function closeModal(name) {
 function initArticleList() {
   const list = document.getElementById('articleList');
   if (!list) return;
-  
-  list.innerHTML = articles.map(article => `
-    <div class="article-card">
+
+  list.innerHTML = articles.map((article, index) => `
+    <div class="article-card" data-article-index="${index}">
       <div class="article-title">${article.title}</div>
       <div class="article-summary">${article.summary}</div>
       <div class="article-date">${article.date}</div>
+      <div class="article-read-hint">点击阅读全文 →</div>
     </div>
   `).join('');
+
+  // 点击文章卡片打开正文
+  const cards = document.querySelectorAll('.article-card');
+  cards.forEach(card => {
+    card.addEventListener('click', function() {
+      const index = parseInt(this.getAttribute('data-article-index'));
+      openArticleDetail(index);
+    });
+  });
+}
+
+// ===== 编辑部 - 打开文章详情 =====
+function openArticleDetail(index) {
+  const article = articles[index];
+  if (!article) return;
+
+  const detailContent = document.getElementById('articleDetailContent');
+  if (detailContent) {
+    detailContent.innerHTML = `
+      <h2 class="article-detail-title">${article.title}</h2>
+      <div class="article-detail-date">发表于 ${article.date}</div>
+      <div class="article-detail-body">${article.content}</div>
+    `;
+  }
+
+  openModal('article-detail');
 }
 
 // ===== AI公司 - 渲染项目卡片 =====
@@ -177,6 +205,39 @@ function openMagazineDetail(index) {
   }
   
   openModal('magazine-detail');
+}
+
+// ===== 个人展板 - 渲染手账画布 =====
+function initGalleryBoard() {
+  const board = document.getElementById('galleryBoard');
+  if (!board || typeof galleryItems === 'undefined') return;
+
+  board.innerHTML = galleryItems.map(item => {
+    const style = `left:${item.x}%; top:${item.y}%; transform:rotate(${item.rotate || 0}deg);`;
+
+    if (item.type === 'photo') {
+      return `
+        <div class="board-item board-photo" style="${style}">
+          <img src="${item.image}" alt="${item.caption || '展品'}">
+          ${item.caption ? `<div class="board-caption">${item.caption}</div>` : ''}
+        </div>`;
+    }
+
+    if (item.type === 'note') {
+      return `
+        <div class="board-item board-note" style="${style}">
+          ${item.title ? `<div class="board-note-title">${item.title}</div>` : ''}
+          <div class="board-note-text">${item.text || ''}</div>
+        </div>`;
+    }
+
+    if (item.type === 'sticker') {
+      return `
+        <div class="board-item board-sticker" style="${style}">${item.emoji || '✨'}</div>`;
+    }
+
+    return '';
+  }).join('');
 }
 
 // ===== 公园 - 渲染地图标记 =====
