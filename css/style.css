@@ -366,6 +366,46 @@ body {
   font-style: italic;
 }
 
+/* ===== 编辑部 - 文章详情弹窗 ===== */
+.article-detail-style {
+  max-width: 700px;
+}
+
+.article-detail-title {
+  color: #8b4513;
+  font-family: "Georgia", "SimSun", serif;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #c9b896;
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+}
+
+.article-detail-date {
+  color: #999;
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-bottom: 18px;
+}
+
+.article-detail-body {
+  color: #3a3a3a;
+  font-family: "Georgia", "SimSun", serif;
+  font-size: 1rem;
+  line-height: 2;
+  text-align: justify;
+}
+
+.article-detail-body p {
+  margin-bottom: 14px;
+  text-indent: 2em;
+}
+
+.article-card .article-read-hint {
+  color: #b03a2e;
+  font-size: 0.8rem;
+  margin-top: 6px;
+}
+
 /* ===== AI公司 - 科技风格 ===== */
 .tech-style {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -503,6 +543,99 @@ body {
   color: #8b7355;
   font-style: italic;
   letter-spacing: 2px;
+}
+
+/* ===== 个人展板 - 手账画布 ===== */
+.gallery-board-style {
+  max-width: 900px;
+}
+
+.gallery-board {
+  position: relative;
+  min-height: 500px;
+  margin-top: 15px;
+  border: 1px dashed #c9c4b4;
+  border-radius: 8px;
+  background-color: #fdfcf7;
+  background-image:
+    linear-gradient(#e8e4d8 1px, transparent 1px),
+    linear-gradient(90deg, #e8e4d8 1px, transparent 1px);
+  background-size: 24px 24px;
+  overflow: hidden;
+}
+
+.board-item {
+  position: absolute;
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 照片展品：白边相纸 + 顶部胶带 */
+.board-photo {
+  width: 180px;
+  background: #fff;
+  padding: 8px 8px 6px;
+}
+
+.board-photo img {
+  width: 100%;
+  display: block;
+  border: 1px solid #eee;
+  background: #f5f5f5;
+}
+
+.board-photo::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 64px;
+  height: 20px;
+  background: rgba(255, 232, 130, 0.75);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transform: translateX(-50%) rotate(-3deg);
+}
+
+.board-caption {
+  font-family: "Comic Sans MS", "KaiTi", "楷体", cursive;
+  font-size: 0.82rem;
+  color: #777;
+  text-align: center;
+  padding-top: 6px;
+}
+
+/* 便签展品：黄色便利贴 */
+.board-note {
+  width: 200px;
+  padding: 14px 16px;
+  background: #fff9a8;
+  color: #5a4a1f;
+  font-family: "Comic Sans MS", "KaiTi", "楷体", cursive;
+}
+
+.board-note-title {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.board-note-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* emoji 贴纸 */
+.board-sticker {
+  font-size: 2.6rem;
+  line-height: 1;
+  box-shadow: none;
+  filter: drop-shadow(2px 3px 3px rgba(0, 0, 0, 0.2));
+}
+
+/* 手机端：展品缩小一点，避免挤在一起 */
+@media (max-width: 600px) {
+  .board-photo { width: 130px; }
+  .board-note { width: 150px; }
+  .board-sticker { font-size: 1.8rem; }
 }
 
 /* ===== 游戏厅 - 霓虹风格 ===== */
