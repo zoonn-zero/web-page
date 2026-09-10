@@ -1,0 +1,8 @@
+# 系统与工具产生的临时文件，不需要上传
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+
+# 自动化生成的临时内容文件
+weekly_content.json
