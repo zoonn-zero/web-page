@@ -209,6 +209,29 @@
     </div>
   </div>
 
+  <!-- AI 周刊：期刊索引（最新一期 + 往期列表） -->
+  <div class="modal" id="modal-weekly-index">
+    <div class="modal-content weekly-index-style">
+      <button class="modal-close" data-close="weekly-index">&times;</button>
+      <h2 class="modal-title">📰 AI 周刊</h2>
+      <p class="modal-subtitle">每周一更新 · 只记录这一周真正值得知道的事</p>
+      <div class="weekly-index-list" id="weeklyIndexList">
+        <!-- 期刊卡片由 JS 动态生成 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- AI 周刊：单期正文 -->
+  <div class="modal" id="modal-weekly">
+    <div class="modal-content weekly-article-style">
+      <button class="modal-close" data-close="weekly">&times;</button>
+      <button class="weekly-back" id="weeklyBack">&larr; 返回往期列表</button>
+      <div class="weekly-article" id="weeklyArticle">
+        <!-- 周刊正文由 JS 动态填充 -->
+      </div>
+    </div>
+  </div>
+
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
 </body>

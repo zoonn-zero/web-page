@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initProjectGrid();
   initArcadeGrid();
   initMagazineRack();
+  initWeekly();
   initMapMarkers();
   initGalleryBoard();
   initCat();
@@ -169,8 +170,25 @@ function initArcadeGrid() {
 function initMagazineRack() {
   const rack = document.getElementById('magazineRack');
   if (!rack) return;
-  
-  rack.innerHTML = magazines.map((mag, index) => `
+
+  // AI 周刊作为独立入口排在最前面，点开是往期列表
+  let weeklyCard = '';
+  if (typeof weeklyIssues !== 'undefined' && weeklyIssues.length > 0) {
+    const latest = weeklySorted()[0];
+    weeklyCard = `
+    <div class="magazine-card magazine-card-weekly" id="weeklyEntryCard">
+      <div class="magazine-cover magazine-cover-weekly">
+        <div class="weekly-cover-vol">VOL</div>
+        <div class="weekly-cover-num">${String(latest.vol || 0).padStart(2, '0')}</div>
+      </div>
+      <div class="magazine-info">
+        <div class="magazine-title">AI 周刊</div>
+        <div class="magazine-desc">每周一更新 · 已出 ${weeklyIssues.length} 期 · 点开看最新与往期</div>
+      </div>
+    </div>`;
+  }
+
+  rack.innerHTML = weeklyCard + magazines.map((mag, index) => `
     <div class="magazine-card" data-mag-index="${index}">
       <div class="magazine-cover">${mag.emoji || '📖'}</div>
       <div class="magazine-info">
@@ -179,12 +197,16 @@ function initMagazineRack() {
       </div>
     </div>
   `).join('');
-  
-  // 点击杂志打开详情
-  const cards = document.querySelectorAll('.magazine-card');
-  cards.forEach(card => {
+
+  const entry = document.getElementById('weeklyEntryCard');
+  if (entry) {
+    entry.addEventListener('click', openWeeklyIndex);
+  }
+
+  // 点击其他杂志打开详情
+  rack.querySelectorAll('.magazine-card[data-mag-index]').forEach(card => {
     card.addEventListener('click', function() {
-      const index = parseInt(this.getAttribute('data-mag-index'));
+      const index = parseInt(this.getAttribute('data-mag-index'), 10);
       openMagazineDetail(index);
     });
   });
@@ -205,6 +227,163 @@ function openMagazineDetail(index) {
   }
   
   openModal('magazine-detail');
+}
+
+/* ==========================================================
+   AI 周刊
+   数据在 data.js 的 weeklyIssues 数组里，每周由脚本自动新增一期。
+   结构：期刊索引（往期列表）-> 单期正文（头条 / 重点 / 简讯 三级）
+   ========================================================== */
+
+// 四个分类在简讯里显示成两个字，避免长标签挤占正文
+const WEEKLY_TAG_SHORT = {
+  '模型与产品发布': '模型',
+  'AI 工具与效率玩法': '工具',
+  '研究突破': '研究',
+  '行业与资本': '行业'
+};
+
+function weeklyTagShort(tag) {
+  return WEEKLY_TAG_SHORT[tag] || (tag || '').slice(0, 2);
+}
+
+function weeklySorted() {
+  return weeklyIssues.slice().sort((a, b) => (b.vol || 0) - (a.vol || 0));
+}
+
+function weeklyByLevel(items, level) {
+  return (items || []).filter(item => item.level === level);
+}
+
+function weeklyMinutes(issue) {
+  if (issue.minutes) return issue.minutes;
+  const count = (issue.items || []).length;
+  return Math.max(1, Math.round(count * 0.3));
+}
+
+function initWeekly() {
+  const back = document.getElementById('weeklyBack');
+  if (back) {
+    back.addEventListener('click', function() {
+      closeModal('weekly');
+      openWeeklyIndex();
+    });
+  }
+}
+
+// 期刊索引：最新一期在最上面，每张卡片列出本期要目
+function openWeeklyIndex() {
+  const list = document.getElementById('weeklyIndexList');
+  if (!list || typeof weeklyIssues === 'undefined') return;
+
+  list.innerHTML = weeklySorted().map((issue, idx) => {
+    const items = issue.items || [];
+    const keys = weeklyByLevel(items, 'key');
+    const briefs = weeklyByLevel(items, 'brief');
+    const toc = weeklyByLevel(items, 'lead').concat(keys).slice(0, 3);
+    const cats = new Set(items.map(i => i.tag)).size;
+
+    return `
+    <article class="weekly-issue${idx === 0 ? ' is-latest' : ''}" data-vol="${issue.vol}">
+      <div class="weekly-issue-spine">
+        <div class="weekly-issue-date">${issue.date || ''}</div>
+        <div class="weekly-issue-vol">${String(issue.vol || 0).padStart(2, '0')}</div>
+        ${idx === 0 ? '<div class="weekly-issue-badge">最新</div>' : ''}
+      </div>
+      <div class="weekly-issue-body">
+        <div class="weekly-issue-headline">${issue.headline || issue.summary || ''}</div>
+        <div class="weekly-issue-meta">${items.length} 条 · ${cats} 个分类 · 约 ${weeklyMinutes(issue)} 分钟读完</div>
+        <div class="weekly-issue-toc">
+          <div class="weekly-issue-toc-label">本期要目</div>
+          ${toc.map(i => `<div class="weekly-issue-toc-item">${i.heading || ''}</div>`).join('')}
+          ${briefs.length ? `<div class="weekly-issue-toc-more">另有简讯 ${briefs.length} 条</div>` : ''}
+        </div>
+      </div>
+    </article>`;
+  }).join('');
+
+  list.querySelectorAll('.weekly-issue').forEach(card => {
+    card.addEventListener('click', function() {
+      openWeeklyIssue(parseInt(this.getAttribute('data-vol'), 10));
+    });
+  });
+
+  closeModal('cafe');
+  openModal('weekly-index');
+}
+
+// 单期正文：按 lead / key / brief 三档排版
+function openWeeklyIssue(vol) {
+  const issue = weeklyIssues.filter(w => w.vol === vol)[0];
+  const box = document.getElementById('weeklyArticle');
+  if (!issue || !box) return;
+
+  const items = issue.items || [];
+  const lead = weeklyByLevel(items, 'lead')[0];
+  const keys = weeklyByLevel(items, 'key');
+  const briefs = weeklyByLevel(items, 'brief');
+  const parts = [];
+
+  // 期号信息行
+  const counter = [];
+  if (lead) counter.push('头条 1');
+  if (keys.length) counter.push('重点 ' + keys.length);
+  if (briefs.length) counter.push('简讯 ' + briefs.length);
+  parts.push(`<div class="weekly-meta">AI 周刊 Vol.${String(issue.vol).padStart(2, '0')} · ${issue.date || ''}${counter.length ? ' · ' + counter.join(' / ') : ''}</div>`);
+  parts.push(`<h2 class="weekly-headline">${issue.headline || ''}</h2>`);
+  if (issue.summary) parts.push(`<p class="weekly-lede">${issue.summary}</p>`);
+
+  // 头条
+  if (lead) {
+    parts.push('<section class="weekly-lead">');
+    parts.push(`<div class="weekly-label-row"><span class="weekly-label-lead">头条</span><span class="weekly-label-tag">${lead.tag || ''}</span></div>`);
+    if (lead.heading) parts.push(`<h3 class="weekly-lead-title">${lead.heading}</h3>`);
+    if (lead.detail) parts.push(`<p class="weekly-lead-detail">${lead.detail}</p>`);
+    if (lead.stats && lead.stats.length) {
+      parts.push('<div class="weekly-stats">' + lead.stats.map(s => `
+        <div class="weekly-stat">
+          <div class="weekly-stat-label">${s.label || ''}</div>
+          <div class="weekly-stat-value">${s.value || ''}</div>
+        </div>`).join('') + '</div>');
+    }
+    if (lead.comment) parts.push(`<p class="weekly-comment">${lead.comment}</p>`);
+    parts.push('</section>');
+  }
+
+  // 重点
+  if (keys.length) {
+    parts.push('<section class="weekly-section">');
+    parts.push(`<div class="weekly-section-label">重点 · ${keys.length} 条</div>`);
+    keys.forEach(k => {
+      parts.push('<div class="weekly-key">');
+      if (k.heading) parts.push(`<h3 class="weekly-key-title">${k.heading}</h3>`);
+      if (k.detail) parts.push(`<p class="weekly-key-detail">${k.detail}</p>`);
+      if (k.comment) parts.push(`<p class="weekly-comment is-key">${k.comment}</p>`);
+      parts.push('</div>');
+    });
+    parts.push('</section>');
+  }
+
+  // 简讯
+  if (briefs.length) {
+    parts.push('<section class="weekly-section">');
+    parts.push(`<div class="weekly-section-label">简讯 · ${briefs.length} 条</div>`);
+    briefs.forEach(b => {
+      parts.push(`
+      <div class="weekly-brief">
+        <span class="weekly-brief-tag">${weeklyTagShort(b.tag)}</span>
+        <div class="weekly-brief-body">
+          <div class="weekly-brief-title">${b.heading || ''}</div>
+          ${b.detail ? `<div class="weekly-brief-detail">${b.detail}</div>` : ''}
+        </div>
+      </div>`);
+    });
+    parts.push('</section>');
+  }
+
+  box.innerHTML = parts.join('');
+  closeModal('weekly-index');
+  openModal('weekly');
 }
 
 // ===== 个人展板 - 渲染手账画布 =====

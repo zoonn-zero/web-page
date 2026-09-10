@@ -787,7 +787,7 @@ body {
   margin-bottom: 20px;
 }
 
-/* ===== AI 周刊排版（自动生成内容用的格式） ===== */
+/* ===== 杂志详情通用排版（其他杂志仍在用） ===== */
 .magazine-detail-body h3 {
   color: #8b4513;
   font-size: 1.05rem;
@@ -799,21 +799,216 @@ body {
 .magazine-detail-body h3:first-child { margin-top: 0; }
 .magazine-detail-body p { margin-bottom: 10px; }
 .magazine-detail-body strong { color: #8b4513; }
-.magazine-detail-body .weekly-meta {
-  color: #a8896a;
-  font-size: 0.8rem;
-  letter-spacing: 1px;
-  border-bottom: 1px dashed #e0cdb6;
-  padding-bottom: 10px;
-  margin-bottom: 18px;
+
+/* ==========================================================
+   AI 周刊 - 期刊索引（最新一期 + 往期）
+   排版规范：容器 ≤720px、字号阶梯每级 ≥1.25×、间距走 8px 刻度、
+             只有一个强调色（#8b4513），其余用暖灰层级
+   ========================================================== */
+.weekly-index-style {
+  background: #fffaf3;
+  border: 3px solid #c68c53;
+  max-width: 720px;
 }
-.magazine-detail-body .weekly-comment {
-  color: #7a6a55;
+.weekly-index-style .modal-title { color: #8b4513; }
+.weekly-index-style .modal-subtitle { color: #a0522d; }
+
+.weekly-index-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.weekly-issue {
+  display: flex;
+  border: 1px solid #e8d5bf;
+  border-radius: 10px;
+  background: #fffdf9;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.weekly-issue:hover {
+  transform: translateY(-3px);
+  border-color: #d9b98e;
+  box-shadow: 0 10px 24px rgba(139, 69, 19, 0.16);
+}
+
+.weekly-issue-spine {
+  width: 76px;
+  flex-shrink: 0;
+  background: #c9a87c;
+  color: #fff7ec;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0;
+  text-align: center;
+}
+.weekly-issue.is-latest .weekly-issue-spine { background: #8b4513; }
+.weekly-issue-date { font-size: 0.62rem; letter-spacing: 0.5px; opacity: 0.85; }
+.weekly-issue-vol {
+  font-family: "Georgia", "SimSun", serif;
+  font-size: 1.6rem;
+  line-height: 1.15;
+  margin-top: 2px;
+}
+.weekly-issue-badge {
+  font-size: 0.6rem;
+  background: #fff7ec;
+  color: #8b4513;
+  border-radius: 2px;
+  padding: 1px 5px;
+  margin-top: 5px;
+}
+
+.weekly-issue-body { flex: 1; min-width: 0; padding: 14px 16px; }
+.weekly-issue-headline {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #3f2a17;
+  line-height: 1.5;
+}
+.weekly-issue-meta { font-size: 0.72rem; color: #a8896a; margin-top: 4px; letter-spacing: 0.3px; }
+.weekly-issue-toc { border-top: 1px dashed #ede0ce; margin-top: 10px; padding-top: 10px; }
+.weekly-issue-toc-label { font-size: 0.65rem; color: #b09b80; letter-spacing: 1px; margin-bottom: 4px; }
+.weekly-issue-toc-item { font-size: 0.78rem; color: #5d4530; line-height: 1.8; }
+.weekly-issue-toc-more { font-size: 0.74rem; color: #a8896a; line-height: 1.8; margin-top: 2px; }
+
+/* ==========================================================
+   AI 周刊 - 单期正文（头条 / 重点 / 简讯 三级层次）
+   ========================================================== */
+.weekly-article-style {
+  background: #fffaf3;
+  border: 3px solid #c68c53;
+  max-width: 700px;
+}
+
+.weekly-back {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 0.75rem;
+  color: #a8896a;
+  cursor: pointer;
+}
+.weekly-back:hover { color: #8b4513; }
+
+.weekly-article { color: #4a3628; }
+
+/* 期头 */
+.weekly-meta {
+  font-size: 0.68rem;
+  color: #a8896a;
+  letter-spacing: 0.6px;
+  margin: 20px 0 0;
+}
+.weekly-headline {
+  font-family: "Georgia", "SimSun", serif;
+  font-size: 1.5rem;
+  line-height: 1.35;
+  color: #3f2a17;
+  margin: 8px 0 0;
+}
+.weekly-lede {
   font-size: 0.88rem;
-  font-style: italic;
+  line-height: 1.75;
+  color: #7a6a55;
+  margin: 10px 0 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #ede0ce;
+}
+
+/* 头条 */
+.weekly-lead { margin-top: 24px; }
+.weekly-label-row { display: flex; align-items: center; gap: 8px; }
+.weekly-label-lead {
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  color: #fff7ec;
+  background: #8b4513;
+  border-radius: 3px;
+  padding: 2px 7px;
+}
+.weekly-label-tag { font-size: 0.65rem; color: #a8896a; }
+.weekly-lead-title {
+  font-family: "Georgia", "SimSun", serif;
+  font-size: 1.22rem;
+  line-height: 1.5;
+  color: #3f2a17;
+  margin: 10px 0 0;
+}
+.weekly-lead-detail { font-size: 0.88rem; line-height: 1.85; color: #4a3628; margin: 10px 0 0; }
+
+.weekly-stats { display: flex; gap: 8px; margin-top: 14px; }
+.weekly-stat { flex: 1; min-width: 0; background: #f7ede0; border-radius: 6px; padding: 8px 10px; }
+.weekly-stat-label { font-size: 0.65rem; color: #a8896a; }
+.weekly-stat-value { font-size: 1.05rem; color: #8b4513; font-weight: bold; margin-top: 2px; }
+
+/* 点评 */
+.weekly-comment {
+  font-size: 0.8rem;
+  line-height: 1.75;
+  color: #7a6a55;
+  border-left: 3px solid #d9bfa0;
   padding-left: 12px;
-  border-left: 3px solid #e0cdb6;
-  margin-bottom: 16px;
+  margin: 14px 0 0;
+}
+.weekly-comment.is-key { border-left-color: #e5d3bc; margin-top: 8px; }
+
+/* 分区标题 */
+.weekly-section { margin-top: 32px; border-top: 1px dashed #e0cdb6; padding-top: 20px; }
+.weekly-section-label { font-size: 0.68rem; color: #a8896a; letter-spacing: 1px; margin-bottom: 14px; }
+
+/* 重点 */
+.weekly-key { margin-bottom: 20px; }
+.weekly-key:last-child { margin-bottom: 0; }
+.weekly-key-title { font-size: 1.02rem; line-height: 1.55; color: #3f2a17; margin: 0; }
+.weekly-key-detail { font-size: 0.84rem; line-height: 1.8; color: #4a3628; margin: 5px 0 0; }
+
+/* 简讯 */
+.weekly-brief { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid #f3e9dc; }
+.weekly-brief:last-child { border-bottom: none; }
+.weekly-brief-tag {
+  flex-shrink: 0;
+  height: fit-content;
+  font-size: 0.62rem;
+  color: #8b4513;
+  background: #f5e6d3;
+  border-radius: 2px;
+  padding: 2px 6px;
+}
+.weekly-brief-body { flex: 1; min-width: 0; }
+.weekly-brief-title { font-size: 0.82rem; font-weight: bold; color: #4a3628; line-height: 1.5; }
+.weekly-brief-detail { font-size: 0.78rem; color: #8a7a65; line-height: 1.6; margin-top: 3px; }
+
+/* 咖啡馆里的周刊入口（封面直接显示最新期号） */
+.magazine-card-weekly .magazine-cover {
+  background: linear-gradient(135deg, #c68c53 0%, #8b4513 100%);
+  flex-direction: column;
+  gap: 2px;
+}
+.weekly-cover-vol { font-size: 0.75rem; letter-spacing: 3px; color: rgba(255, 255, 255, 0.85); }
+.weekly-cover-num {
+  font-family: "Georgia", "SimSun", serif;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .weekly-issue-spine { width: 58px; }
+  .weekly-issue-date { font-size: 0.55rem; }
+  .weekly-issue-vol { font-size: 1.25rem; }
+  .weekly-issue-body { padding: 12px; }
+  .weekly-issue-headline { font-size: 0.88rem; }
+  .weekly-headline { font-size: 1.25rem; }
+  .weekly-lead-title { font-size: 1.08rem; }
+  .weekly-stats { flex-wrap: wrap; }
+  .weekly-stat { flex: 1 1 40%; }
 }
 
 .magazine-video-link {
