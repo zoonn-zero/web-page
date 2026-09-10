@@ -54,6 +54,13 @@ BRANCH = "main"
 GIT_NAME = "zoonn-zero"
 GIT_EMAIL = "zoonn-zero@users.noreply.github.com"
 
+# 免密推送用的凭据助手（Git Credential Manager）候选路径。
+# 令牌本身存放在 Windows 凭据管理器里，不写进仓库、也不会被提交。
+GCM_CANDIDATES = [
+    r"C:\Program Files\Git\mingw64\bin\git-credential-manager.exe",
+    r"C:\Program Files (x86)\Git\mingw64\bin\git-credential-manager.exe",
+]
+
 
 def die(msg):
     print("[失败] " + msg)
@@ -332,6 +339,24 @@ def main():
         run_git(["init", "-b", BRANCH])
         run_git(["config", "user.name", GIT_NAME])
         run_git(["config", "user.email", GIT_EMAIL])
+
+    # 免密推送的前提：本仓库要能自动取到凭据。本机全局配置指向会弹窗的
+    # helper-selector，无人值守时会卡住，所以这里每次运行都重新指向 GCM。
+    def ensure_credentials():
+        gcm = next((p for p in GCM_CANDIDATES if os.path.exists(p)), None)
+        if not gcm:
+            print("[2/3] 提示：未找到 Git Credential Manager，推送若要求登录会失败。")
+            return
+        # 先用空值清空继承来的 helper 列表，再挂上 GCM
+        run_git(["config", "--unset-all", "credential.helper"], check=False)
+        run_git(["config", "--add", "credential.helper", ""], check=False)
+        # 路径含空格：带引号 + ! 前缀，让 git 交给 shell 执行
+        run_git(
+            ["config", "--add", "credential.helper", '!"%s"' % gcm.replace("\\", "/")],
+            check=False,
+        )
+
+    ensure_credentials()
 
     if run_git(["remote", "get-url", "origin"], check=False).returncode == 0:
         run_git(["remote", "set-url", "origin", REPO_URL])
