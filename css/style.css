@@ -453,6 +453,18 @@ body {
   box-shadow: 0 5px 20px rgba(0, 212, 255, 0.2);
 }
 
+/* 有 url 的项目卡片整张可点（外链） */
+.project-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.project-card-link:focus-visible {
+  outline: 2px solid #00d4ff;
+  outline-offset: 3px;
+}
+
 .project-icon {
   font-size: 2.5rem;
   margin-bottom: 10px;

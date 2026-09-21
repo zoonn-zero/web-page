@@ -129,13 +129,16 @@ function initProjectGrid() {
   const grid = document.getElementById('projectGrid');
   if (!grid) return;
   
-  grid.innerHTML = projects.map(project => `
-    <div class="project-card">
+  grid.innerHTML = projects.map(project => {
+    const inner = `
       <div class="project-icon">${project.icon}</div>
       <div class="project-name">${project.name}</div>
       <div class="project-desc">${project.description}</div>
-    </div>
-  `).join('');
+    `;
+    return project.url
+      ? `<a class="project-card project-card-link" href="${project.url}" target="_blank" rel="noopener noreferrer">${inner}</a>`
+      : `<div class="project-card">${inner}</div>`;
+  }).join('');
 }
 
 // ===== 游戏厅 - 渲染街机列表 =====

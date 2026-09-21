@@ -79,6 +79,7 @@ const articles = [
 // ===== 2. AI公司 - 项目列表 =====
 // 新增项目：在数组中添加 {name, description, icon} 对象
 // icon 可以用 emoji 或者图片路径
+// 可选 url：填了就整张卡片可点，会跳到站外（如作品集子域名）
 const projects = [
   {
     name: "机械产品外贸",
@@ -94,6 +95,12 @@ const projects = [
     name: "小程序开发",
     description: "用 AI 加速开发流程，打造实用的微信小程序产品。",
     icon: "📱"
+  },
+  {
+    name: "个人网站开发",
+    description: "给个人做的展示型网站，做过的样张都放在作品集里。",
+    icon: "🖥️",
+    url: "https://work.zoonn.org"
   }
 ];
 

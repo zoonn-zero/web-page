@@ -6,3 +6,6 @@ Thumbs.db
 
 # 自动化生成的临时内容文件
 weekly_content.json
+
+# WorkBuddy 的本地记忆与方案草稿，不该公开到站点
+.workbuddy/
