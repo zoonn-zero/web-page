@@ -192,6 +192,30 @@ const magazines = [
 // ▲▲▲ 自动更新区 ▲▲▲
 const weeklyIssues = [
   {
+    vol: 3,
+    date: "2026-09-21",
+    headline: "安全刹车与商业油门：本周 AI 的两条主线",
+    summary: "四家巨头因呼吁减速被起诉，而算力与模型的融资和发布仍在加速。",
+    minutes: 8,
+    items: [
+      { level: "lead", tag: "行业与资本", heading: "四家 AI 巨头因「呼吁减速」被提起反垄断诉讼", detail: "9 月 18 日，一份拟转为集体诉讼的民事诉讼提交至美国加州北区联邦法院，指控 OpenAI、Anthropic、谷歌与 SpaceXAI/xAI 达成非法协议，共同放缓前沿 AI 的发展速度，违反《谢尔曼法》。诉状以 Anthropic CEO 达里奥·阿莫代伊 9 月 12 日发表的《We Must Pace the Frontier》一文为核心，指萨姆·奥尔特曼、埃隆·马斯克与德米斯·哈萨比斯先后公开附议，构成了竞争者之间的约定。四名原告分别是这四家产品的付费用户，主张自己为改进速度低于应有水平的产品支付了同样的价格。四家公司尚未在法庭答辩。", comment: "点评：安全自律一旦由竞争对手共同公开承诺，就天然落在反垄断的射程内。这条边界此前一直模糊，现在要交给法院来划。", stats: [ { label: "被告", value: "4 家" }, { label: "起诉日期", value: "9 月 18 日" }, { label: "原告", value: "4 名付费用户（拟转集体诉讼）" } ] },
+      { level: "key", tag: "模型与产品发布", heading: "阿里上线 Qwen3.8-Omni-Flash：全模态压到 1M 上下文，音视频调用价砍掉九成以上", detail: "9 月 18 日，阿里千问发布原生全模态模型 Qwen3.8-Omni-Flash，同时接受文本、图像、音频、视频输入，上下文长度 1M token，已在千问 AI 平台与阿里云百炼上线，定价为每百万 token 输入 0.15 美元、输出 0.47 美元。官方在约 30 项评测上的平均得分比上一代 Qwen3.5-Omni-Plus 提升超过 26%，音视频 Agent 类任务改善尤其明显：WildClawBench-MM 提高 36.5 分，UniClawBench 拿到 69.6 分。价格是这次的重点，官方称每小时音频输入价格下降超过 98%，每小时音视频输入下降超过 93%。同步开源 Qwen-MM-Plugins 与 Qwen-Live Harness 两套工具链。", comment: "点评：全模态的竞争重心已从「听得懂」转向每 token 成本与长视频的取舍效率。音频输入降到近乎免费，改的是内容生产和会议记录这两类工作流的账本。" },
+      { level: "key", tag: "研究突破", heading: "Google 团队提出 Dream-RSI：让 AI 在历史记录里「做梦」，探索成本降至约 1/162", detail: "Google Research、Google DeepMind 联合马里兰大学与弗吉尼亚大学的 17 人团队，9 月 14 日在 arXiv 发布《Dream-RSI: Recursive Self-Improvement through Evolving Worlds》。做法是不动底层模型权重，把此前探索留下的「发现树」当成零成本的回放模拟器，先在离线环境评估数万种搜索策略，再挑出最优者回到真实环境执行。在 Lasso 算法工程任务上，Agent 调用次数从基线的 51,200 次降至 317 次，约 162 倍；在 VGG16 与 LayerNorm 的 GPU kernel 任务上，分别以 2.43 倍和 1.79 倍更少的生成次数达到同等效果。论文同时发现，人类写的高层语义提示反而会引入过早偏见，削弱搜索多样性。", comment: "点评：它绕开的正是 Agent 自我改进最贵的一环——在线试错。不碰权重、只改探索策略，意味着这套杠杆可以叠在任何现有模型上，这比「新模型刷分」更值得关注。" },
+      { level: "key", tag: "行业与资本", heading: "Anthropic 考虑在 IPO 前放新模型，企业支出份额已被 GPT-6 Astra 反超", detail: "路透社 9 月 19 日援引三名知情人士报道，Anthropic 正考虑在上市前发布一款新模型，以应对 OpenAI 自 GPT-6 Astra 发布以来的势头。在 Ramp 追踪的企业 AI 支出中，Astra 约占 13%，Claude Fable 约占 8%，这一差距促使部分投资方重新审视 Anthropic 的企业市场领先地位。上市营销最早可能 10 月中旬启动，时间点也可能推到 11 月美国中期选举之后。OpenAI 的萨姆·奥尔特曼此前已公开表示，OpenAI 不会在 2026 年上市。", comment: "点评：一家以「不竞速」立身的实验室，如今要在 IPO 窗口前靠发新模型追份额。这是对减速承诺最直接的一次压力测试。" },
+      { level: "key", tag: "AI 工具与效率玩法", heading: "千问开源 Qwen-Image-2.1：把文生图与修图合进一个 7B 模型，许可改为仅限研究", detail: "9 月 20 日，阿里千问将 Qwen-Image-2.1 推上 Hugging Face 与 ModelScope。它用 7B 参数、32 层的单流 DiT，配 Qwen3-VL 8B 文本编码器和 64 通道 RGBA VAE，原生输出 2048×2048，把文生图与图像编辑统一到同一个模型里。输出侧支持透明底，输入侧最多可接 10 张参考图，并支持圈选、涂画、Mask 等局部修改方式，发布首日即兼容 ComfyUI 与 Diffusers。与上一代不同，这一版许可收紧为仅限研究用途。", comment: "点评：能力上它是创作者真正用得上的升级，但许可从 Apache 转向仅限研究，商业团队要提前想清楚这条线怎么绕。" },
+      { level: "brief", tag: "模型与产品发布", heading: "阶跃星辰发布 Step 5 Preview：600B 稀疏 MoE，API 每百万 token 1 美元起", detail: "9 月 20 日，阶跃星辰发布面向真实 Agent 任务的 600B 稀疏 MoE 模型 Step 5 Preview，单 token 激活 27B、支持 1M 上下文与视觉输入，API 同日开放，定价为每百万 token 输入 1 美元、输出 2.70 美元并附 95% 缓存折扣，权重计划 10 月 15 日开放。" },
+      { level: "brief", tag: "模型与产品发布", heading: "智谱称 GLM-5.3-Flash 两周内完成国产加速器全量部署，吞吐提升 3.2 倍", detail: "9 月 18 日，智谱创始人唐杰表示 GLM-5.3-Flash 在两周内完成国产加速器全量部署、吞吐提升 3.2 倍，且大部分工作由 Infra Agent 完成，认为「模型优化系统、系统服务模型」这一最小递归自我改进循环已经出现。" },
+      { level: "brief", tag: "模型与产品发布", heading: "上海 AI 实验室以 MIT 许可开源 Atria Dawn Preview", detail: "9 月 14 日，上海人工智能实验室开源 Atria Dawn Preview，该模型基于 744B 参数的 GLM-5.2 MoE 底座、支持 256K 上下文，BF16 与 FP8 权重同时上架 Hugging Face 与 ModelScope，BF16 权重占盘约 1.5 TB。" },
+      { level: "brief", tag: "AI 工具与效率玩法", heading: "Claude Code 2.1.274 修复六个 MCP 故障模式", detail: "9 月 17 日发布的 Claude Code 2.1.274 修掉六个会静默中断生产会话的 MCP 问题，其中包括 Streamable HTTP 工具调用无视服务端配置、硬性卡在五分钟超时，以及 403 权限不足被误报为登录过期。" },
+      { level: "brief", tag: "研究突破", heading: "两台人形机器人与主刀医生组队完成胆囊切除演示，递送器械成功率 98.7%", detail: "9 月 16 日，韩国三星医疗中心在首尔首次演示人形手术辅助机器人，一台扮演护士按语音指令递送器械、一台扮演助手医师持腹腔镜并牵拉组织，配合主刀医生完成山羊肝脏的胆囊切除，器械递送成功率达 98.7%，项目计划 2029 年进入临床试验。" },
+      { level: "brief", tag: "研究突破", heading: "Anthropic 确认在湾区运营湿实验室，让 Claude 用真实实验检验生物学假设", detail: "Anthropic 生命科学负责人向路透社确认，公司在旧金山湾区运营一处湿实验室，让 Claude 通过真实物理实验检验生物学假设；同期公司上线生命科学验证计划，向通过资质核查的研究机构放宽生物学相关限制。" },
+      { level: "brief", tag: "行业与资本", heading: "AI 基础设施公司 Crusoe 完成 39 亿美元 F 轮，投后估值 309 亿美元", detail: "9 月 17 日，Crusoe 宣布完成 39 亿美元 F 轮首关，投后估值 309 亿美元、约为一年前的三倍，公司称平台合同总额超过 1400 亿美元、已签容量超 6 GW，英伟达、GIC 与卡塔尔投资局参投。" },
+      { level: "brief", tag: "行业与资本", heading: "硅基流动完成新一轮融资，2026 年内累计近 29 亿元", detail: "9 月 20 日，硅基流动宣布完成 B+ 轮二期与 C 轮融资，2026 年内累计融资金额接近 29 亿元，投资方包括中国互联网投资基金、国新基金与中国移动链长基金。" },
+      { level: "brief", tag: "行业与资本", heading: "大模型 token 平均支付价格三个月腰斩，8 月首次跌破 1 美元", detail: "据 Silicon Data 的 LLM Token 支出指数，8 月市场每百万 token 的平均支付价格环比下跌 29% 至 0.97 美元，首次跌破 1 美元关口，而今年 5 月该指数还在 2 美元以上。" },
+      { level: "brief", tag: "行业与资本", heading: "字节分拆的 AI 制药公司 Anew Labs 完成 2.9 亿美元首轮融资", detail: "9 月 16 日，由字节跳动分拆的 AI 制药公司 Anew Labs 完成 2.9 亿美元首轮融资，IDG 资本等领投，字节保留 56% 股权，资金用于 Protenix、Seedfold 等模型的产业化落地。" }
+    ]
+  },
+  {
     vol: 2,
     date: "2026-09-14",
     headline: "一边按下减速键，一边冲向史上最大 AI IPO",
