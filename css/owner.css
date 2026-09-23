@@ -73,9 +73,13 @@ body.owner-page {
 }
 
 .gate-form {
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 10px;
+}
+
+.gate-form.is-panel-active {
+  display: flex;
 }
 
 .gate-row {
@@ -103,6 +107,10 @@ body.owner-page {
   font-size: 0.9rem;
   font-family: inherit;
   transition: border-color 0.2s ease;
+}
+
+.gate-input.is-hidden {
+  display: none;
 }
 
 .gate-input:focus {
@@ -358,6 +366,9 @@ body.owner-page {
 
 .main-btn:hover { background: #f0f6fc; }
 
+/* 通用于本页的显式隐藏：不依赖 UA 样式，任何 display 都盖不掉 */
+.is-hidden { display: none !important; }
+
 .owner-thread {
   flex: 1;
   min-height: 0;
@@ -421,13 +432,18 @@ body.owner-page {
 }
 
 .owner-compose {
-  display: flex;
+  display: none;
   align-items: flex-end;
   gap: 10px;
   padding: 14px 22px 18px;
   background: #fff;
   border-top: 1px solid #e2ecf6;
   flex-shrink: 0;
+}
+
+/* 选中某个来访者后才出现 */
+.owner-compose.is-live {
+  display: flex;
 }
 
 .owner-input {

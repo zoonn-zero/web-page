@@ -55,6 +55,8 @@
         endpoint: cfg.endpoint,
         publishableKey: cfg.publishableKey
       });
+      // 排查期：把客户端挂到全局，方便在浏览器控制台里直接试调用
+      global.__cloud = _client;
       return _client;
     });
   }
