@@ -54,53 +54,36 @@
   }
 
   function initTabs() {
-    el.gateTabs.querySelectorAll('.gate-tab').forEach(function (tab) {
-      tab.addEventListener('click', function () {
-        var name = tab.getAttribute('data-tab');
-        el.gateTabs.querySelectorAll('.gate-tab').forEach(function (t) {
-          t.classList.toggle('is-active', t === tab);
-        });
-        showPanel(name);
-        msg('');
-      });
-    });
-
-    $('toReset').addEventListener('click', function () {
-      el.gateTabs.querySelectorAll('.gate-tab').forEach(function (t) {
-        t.classList.remove('is-active');
-      });
-      showPanel('reset');
-      msg('');
-    });
-
-    // 初始：只显示密码登录
+    // 登录面板只剩一个，无需切换逻辑；确保它处于可见状态即可
     showPanel('password');
   }
 
   // ---------- 错误翻译 ----------
-  // 把 SDK 返回的错误码翻成人话，同时保留原始信息便于排查
+  // 把 Supabase 返回的错误码翻成人话，同时保留原始信息便于排查
   var DEBUG = true;  // 排查期打开：错误详情会一起显示出来
 
   function whyFailed(res) {
     var e = (res && res.error) || {};
-    var code = e.code || e.kind || e.status || e.error || '';
-    var text = e.message || e.error_description || '';
+    var code = e.code || e.status || e.error_code || e.error || '';
+    var text = e.message || e.msg || e.error_description || '';
 
     var friendly = '';
-    if (/rate|too.?many|frequen/i.test(code + " " + text)) {
-      friendly = '发送太频繁了，等 1 分钟再试';
-    } else if (/invalid.?email|email.*invalid|邮箱/i.test(code + " " + text)) {
+    var blob = String(code) + ' ' + String(text);
+
+    if (/invalid.?login|invalid.?credential|invalid.?grant/i.test(blob)) {
+      friendly = '邮箱或密码不对，再核对一下';
+    } else if (/email.?not.?confirmed/i.test(blob)) {
+      friendly = '这个账号还没确认，去 Supabase 后台把它改成已确认';
+    } else if (/invalid.?email|email.*invalid/i.test(blob)) {
       friendly = '邮箱格式不对，检查一下有没有写错';
-    } else if (/expire/i.test(code + " " + text)) {
-      friendly = '验证码已过期，重新点「发送」拿一个新的';
-    } else if (/invalid.*token|invalid.*code|wrong.*code/i.test(code + " " + text)) {
-      friendly = '验证码不对，检查有没有抄错';
-    } else if (/unauthenticated|invalid_grant/i.test(code + " " + text)) {
-      friendly = '账号或密码不对';
-    } else if (/invalid_client|credential/i.test(code + " " + text)) {
-      friendly = '这个域名的登录权限没配好，需要我处理一下';
-    } else if (/network|timeout|unavailable/i.test(code + " " + text)) {
+    } else if (/rate|too.?many|frequen/i.test(blob)) {
+      friendly = '尝试太频繁了，等 1 分钟再试';
+    } else if (/user.?not.?found/i.test(blob)) {
+      friendly = '这个邮箱没有注册过';
+    } else if (/network|timeout|unavailable|fetch/i.test(blob)) {
       friendly = '网络不稳定，稍后再试';
+    } else if (/origin|domain|redirect/i.test(blob)) {
+      friendly = '这个域名的登录权限没配好，需要我处理一下';
     }
 
     if (!friendly) {
@@ -113,7 +96,7 @@
     return friendly;
   }
 
-  // --- 密码登录 ---
+  // --- 密码登录（唯一的登录入口） ---
   function bindPassword() {
     $('formPassword').addEventListener('submit', function (e) {
       e.preventDefault();
@@ -129,155 +112,15 @@
           if (res.error) return msg(whyFailed(res));
           enterApp('登录成功。');
         })
-        .catch(function (err) {
+        .catch(function () {
           busy(btn, false);
           msg('连不上，稍后再试');
         });
     });
   }
 
-  // --- 验证码登录 ---
-  function bindOtp() {
-    // signInWithOtp 会把「校验验证码」的回调放在返回值里，需要留到下一步用
-    $('sendOtp').addEventListener('click', function () {
-      var btn = this;
-      var email = $('otpEmail').value.trim();
-      if (!email) return msg('先填邮箱');
-      busy(btn, true, '发送中…');
-      cloud.auth.signInWithOtp({ email: email }).then(function (res) {
-        busy(btn, false);
-        if (res.error) return msg(whyFailed(res));
-        global.__otpVerify = res.data.verify;
-        msg('验证码已发到邮箱', true);
-      }).catch(function () {
-        busy(btn, false);
-        msg('连不上，稍后再试');
-      });
-    });
-
-    $('formOtp').addEventListener('submit', function (e) {
-      e.preventDefault();
-      var btn = this.querySelector('.gate-btn');
-      var code = $('otpCode').value.trim();
-      if (!global.__otpVerify) return msg('先点「发送」拿验证码');
-      if (!code) return msg('填一下收到的验证码');
-
-      busy(btn, true, '校验中…');
-      global.__otpVerify({ token: code }).then(function (res) {
-        busy(btn, false);
-        if (res.error) return msg(whyFailed(res));
-        global.__otpVerify = null;
-        enterApp('登录成功。');
-      }).catch(function () {
-        busy(btn, false);
-        msg('连不上，稍后再试');
-      });
-    });
-  }
-
-  // --- 注册（邮箱验证 + 设密码） ---
-  function bindSignup() {
-    $('suSend').addEventListener('click', function () {
-      var btn = this;
-      var email = $('suEmail').value.trim();
-      if (!email) return msg('先填邮箱');
-      busy(btn, true, '发送中…');
-      cloud.auth.sendOtp({ email: email }).then(function (res) {
-        busy(btn, false);
-        if (res.error) return msg(whyFailed(res));
-        global.__suOtp = res.data;
-
-        // 新邮箱才显示「设密码」；已注册过的邮箱引导去登录，不暴露账号是否存在
-        var pwField = $('suPassword');
-        var submitBtn = $('formSignup').querySelector('.gate-btn');
-        if (res.data.isExistingUser) {
-          pwField.classList.add('is-hidden');
-          pwField.value = '';
-          submitBtn.textContent = '验证并登录';
-          msg('验证码已发到邮箱。这个邮箱之前用过，验证后直接登录。', true);
-        } else {
-          pwField.classList.remove('is-hidden');
-          submitBtn.textContent = '注册并登录';
-          msg('验证码已发到邮箱，再设一个密码就完成注册。', true);
-        }
-      }).catch(function () {
-        busy(btn, false);
-        msg('连不上，稍后再试');
-      });
-    });
-
-    $('formSignup').addEventListener('submit', function (e) {
-      e.preventDefault();
-      var btn = this.querySelector('.gate-btn');
-      var code = $('suCode').value.trim();
-      var email = $('suEmail').value.trim();
-      if (!global.__suOtp) return msg('先点「发送」拿验证码');
-      if (!code) return msg('填一下收到的验证码');
-
-      var existing = !!global.__suOtp.isExistingUser;
-      var password = $('suPassword').value;
-
-      if (!existing) {
-        if (password.length < 6) return msg('密码至少 6 位');
-      }
-
-      busy(btn, true, '提交中…');
-      cloud.auth.verifyOtp({
-        verificationId: global.__suOtp.verificationId,
-        token: code,
-        email: email,
-        isExistingUser: global.__suOtp.isExistingUser,
-        password: existing ? undefined : password
-      }).then(function (res) {
-        busy(btn, false);
-        if (res.error) return msg(whyFailed(res));
-        global.__suOtp = null;
-        enterApp('注册成功，已经登录。');
-      }).catch(function () {
-        busy(btn, false);
-        msg('连不上，稍后再试');
-      });
-    });
-  }
-
-  // --- 重置密码 ---
-  function bindReset() {
-    $('rsSend').addEventListener('click', function () {
-      var btn = this;
-      var email = $('rsEmail').value.trim();
-      if (!email) return msg('先填邮箱');
-      busy(btn, true, '发送中…');
-      cloud.auth.resetPasswordForEmail(email).then(function (res) {
-        busy(btn, false);
-        if (res.error) return msg(whyFailed(res));
-        global.__rsCb = res.data;
-        msg('验证码已发到邮箱', true);
-      }).catch(function () {
-        busy(btn, false);
-        msg('连不上，稍后再试');
-      });
-    });
-
-    $('formReset').addEventListener('submit', function (e) {
-      e.preventDefault();
-      var btn = this.querySelector('.gate-btn');
-      var code = $('rsCode').value.trim();
-      var password = $('rsPassword').value;
-      if (!global.__rsCb) return msg('先点「发送」拿验证码');
-      if (password.length < 6) return msg('新密码至少 6 位');
-
-      busy(btn, true, '提交中…');
-      global.__rsCb.updateUser({ nonce: code, password: password }).then(function (res) {
-        busy(btn, false);
-        if (res.error) return msg(whyFailed(res));
-        global.__rsCb = null;
-        enterApp('密码已重设，已经登录。');
-      }).catch(function () {
-        busy(btn, false);
-        msg('连不上，稍后再试');
-      });
-    });
-  }
+  // 只保留一个登录入口，其余形态（验证码 / 注册 / 重置）已下线。
+  // 忘记密码时在 Supabase 后台直接改，不从这里走。
 
   // ---------- 进入后台 ----------
 
@@ -497,7 +340,6 @@
 
   function boot() {
     el.gateMsg = $('gateMsg');
-    el.gateTabs = $('gateTabs');
     el.ownerGate = $('ownerGate');
     el.ownerApp = $('ownerApp');
     el.ownerEmail = $('ownerEmail');
@@ -517,13 +359,10 @@
     API.client().then(function (c) {
       cloud = c;
       bindPassword();
-      bindOtp();
-      bindSignup();
-      bindReset();
 
       return cloud.auth.getSession();
     }).then(function (res) {
-      var session = res && res.data;
+      var session = res && res.data && res.data.session;
       if (session && session.user) enterApp();
     }).catch(function () {
       msg('连不上云端，检查网络后刷新重试');

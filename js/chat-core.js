@@ -4,16 +4,18 @@
    两处用到：主站右下角的访客窗口（chat-widget.js）
              你自己的后台页（owner.html）
 
+   后端：Supabase
    云端规则（务必记住）：
    - role='visitor' 任何人都能写（免登录）
    - role='host'    只有登录后才能写
    - 所有人（含未登录）都能读全部消息
+   这三条由数据库的行级安全策略（RLS）强制执行，前端绕不过去。
    ========================================================== */
 
 (function (global) {
   'use strict';
 
-  var SDK_URL = 'https://cdn.jsdelivr.net/npm/@tencent-ai/workbuddy-cloud-sdk@dev/lib/index.global.js';
+  var SDK_URL = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js';
 
   // 本地记住房号与昵称：刷新页面后接着聊，不用重新输名字
   var LS_ROOM = 'zoonn_chat_room';
@@ -26,7 +28,7 @@
   // ---------- 基础 ----------
 
   function loadSdk() {
-    if (global.WorkBuddyCloud) return Promise.resolve(global.WorkBuddyCloud);
+    if (global.supabase && global.supabase.createClient) return Promise.resolve(global.supabase);
     if (_sdkLoading) return _sdkLoading;
 
     _sdkLoading = new Promise(function (resolve, reject) {
@@ -34,7 +36,7 @@
       s.src = SDK_URL;
       s.async = true;
       s.onload = function () {
-        if (global.WorkBuddyCloud) resolve(global.WorkBuddyCloud);
+        if (global.supabase && global.supabase.createClient) resolve(global.supabase);
         else reject(new Error('SDK_LOAD_FAILED'));
       };
       s.onerror = function () { reject(new Error('SDK_LOAD_FAILED')); };
@@ -47,13 +49,16 @@
   function client() {
     if (_client) return Promise.resolve(_client);
     var cfg = global.ZOONN_CHAT_CONFIG;
-    if (!cfg || !cfg.endpoint || !cfg.publishableKey) {
+    if (!cfg || !cfg.url || !cfg.anonKey) {
       return Promise.reject(new Error('CONFIG_MISSING'));
     }
     return loadSdk().then(function (sdk) {
-      _client = sdk.createWorkBuddyCloud({
-        endpoint: cfg.endpoint,
-        publishableKey: cfg.publishableKey
+      _client = sdk.createClient(cfg.url, cfg.anonKey, {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          storageKey: 'zoonn_auth'
+        }
       });
       // 排查期：把客户端挂到全局，方便在浏览器控制台里直接试调用
       global.__cloud = _client;
@@ -62,7 +67,13 @@
   }
 
   function db() {
-    return client().then(function (c) { return c.database; });
+    return client().then(function (c) { return c; });
+  }
+
+  // supabase-js 的查询是 thenable，直接返回即可。
+  // 上层代码统一读 res.data / res.error，与 supabase 的返回结构一致，无需转换。
+  function run(builder) {
+    return db().then(function (c) { return builder(c); });
   }
 
   function store(k, v) {
@@ -110,14 +121,15 @@
   // 首次进入时把房间登记到 chat_rooms，后台才能列出来
   function ensureRoom(nickname) {
     var id = getRoomId();
-    return db().then(function (database) {
-      return database.from('chat_rooms')
-        .insert({ id: id, visitor_name: String(nickname || '').slice(0, 20) })
-        .select();
+    return run(function (c) {
+      return c.from('chat_rooms')
+        .upsert(
+          { id: id, visitor_name: String(nickname || '').slice(0, 20) },
+          { onConflict: 'id', ignoreDuplicates: true }
+        );
     }).then(function (res) {
-      // 唯一键冲突（房间已存在）属正常，忽略
+      // 房间已存在属正常，忽略
       if (res && res.error && res.error.code !== '23505') {
-        // 23505 = 已存在；其它错误交给调用方决定是否提示
         return { roomId: id, error: res.error };
       }
       return { roomId: id, error: null };
@@ -129,8 +141,8 @@
   // ---------- 消息 ----------
 
   function fetchMessages(roomId, sinceId) {
-    return db().then(function (database) {
-      var q = database.from('chat_messages')
+    return run(function (c) {
+      var q = c.from('chat_messages')
         .select('id, room_id, role, body, created_at')
         .eq('room_id', roomId)
         .order('id', { ascending: true })
@@ -141,8 +153,8 @@
   }
 
   function fetchRecentRooms(limit) {
-    return db().then(function (database) {
-      return database.from('chat_rooms')
+    return run(function (c) {
+      return c.from('chat_rooms')
         .select('id, visitor_name, created_at, last_active')
         .order('last_active', { ascending: false })
         .limit(limit || 50);
@@ -150,16 +162,16 @@
   }
 
   function sendMessage(roomId, role, body) {
-    return db().then(function (database) {
-      return database.from('chat_messages')
+    return run(function (c) {
+      return c.from('chat_messages')
         .insert({ room_id: roomId, role: role, body: String(body).slice(0, 2000) })
         .select();
     });
   }
 
   function touchRoom(roomId) {
-    return db().then(function (database) {
-      return database.from('chat_rooms')
+    return run(function (c) {
+      return c.from('chat_rooms')
         .update({ last_active: new Date().toISOString() })
         .eq('id', roomId);
     }).catch(function () { /* 心跳失败不打扰用户 */ });
@@ -196,6 +208,7 @@
   global.ZoonnChat = {
     client: client,
     db: db,
+    run: run,
     LS_ROOM: LS_ROOM,
     LS_NAME: LS_NAME,
     LS_SEEN: LS_SEEN,

@@ -10,64 +10,21 @@
 </head>
 <body class="owner-page">
 
-  <!-- ===== 未登录：登录 / 注册 ===== -->
+  <!-- ===== 未登录：登录 ===== -->
   <div class="owner-gate" id="ownerGate">
     <div class="gate-card">
       <h1 class="gate-title">留言后台</h1>
       <p class="gate-sub">只有你自己需要登录。访客那边不需要。</p>
 
-      <div class="gate-tabs" id="gateTabs">
-        <button class="gate-tab is-active" data-tab="password">密码登录</button>
-        <button class="gate-tab" data-tab="otp">验证码登录</button>
-        <button class="gate-tab" data-tab="signup">注册</button>
-      </div>
-
-      <!-- 密码登录 -->
+      <!-- 登录（唯一入口） -->
       <form class="gate-form is-panel-active" id="formPassword" data-panel="password">
-        <p class="gate-tip">已经注册过就用这里。<br>没注册过？点上面的「注册」。</p>
         <input type="email" class="gate-input" id="pwEmail" placeholder="邮箱" autocomplete="username">
         <input type="password" class="gate-input" id="pwPassword" placeholder="密码" autocomplete="current-password">
         <button type="submit" class="gate-btn">登录</button>
-        <button type="button" class="gate-link" id="toReset">忘记密码？</button>
-      </form>
-
-      <!-- 验证码登录 -->
-      <form class="gate-form" id="formOtp" data-panel="otp">
-        <p class="gate-tip">忘了密码也能进：填邮箱收验证码就行。</p>
-        <input type="email" class="gate-input" id="otpEmail" placeholder="邮箱">
-        <div class="gate-row">
-          <input type="text" class="gate-input" id="otpCode" placeholder="6 位验证码" inputmode="numeric">
-          <button type="button" class="gate-btn gate-btn-ghost" id="sendOtp">发送</button>
-        </div>
-        <button type="submit" class="gate-btn">登录</button>
-      </form>
-
-      <!-- 注册（邮箱验证 + 设密码） -->
-      <form class="gate-form" id="formSignup" data-panel="signup">
-        <p class="gate-tip">第一次用走这里：填邮箱 → 点「发送」→ 收邮件拿 6 位码 → 设密码 → 提交。<br>提交成功后会自动进入后台，看到「来访的人」列表就算成功。</p>
-        <input type="email" class="gate-input" id="suEmail" placeholder="邮箱">
-        <div class="gate-row">
-          <input type="text" class="gate-input" id="suCode" placeholder="6 位验证码" inputmode="numeric">
-          <button type="button" class="gate-btn gate-btn-ghost" id="suSend">发送</button>
-        </div>
-        <input type="password" class="gate-input" id="suPassword" placeholder="设置密码（至少 6 位）" autocomplete="new-password">
-        <button type="submit" class="gate-btn">注册并登录</button>
-      </form>
-
-      <!-- 重置密码 -->
-      <form class="gate-form" id="formReset" data-panel="reset">
-        <p class="gate-tip">收邮件验证码后重设密码。</p>
-        <input type="email" class="gate-input" id="rsEmail" placeholder="邮箱">
-        <div class="gate-row">
-          <input type="text" class="gate-input" id="rsCode" placeholder="6 位验证码" inputmode="numeric">
-          <button type="button" class="gate-btn gate-btn-ghost" id="rsSend">发送</button>
-        </div>
-        <input type="password" class="gate-input" id="rsPassword" placeholder="新密码" autocomplete="new-password">
-        <button type="submit" class="gate-btn">重设密码</button>
       </form>
 
       <p class="gate-msg" id="gateMsg"></p>
-      <p class="gate-note">登录只在 www.zoonn.org 这个正式域名下有效，本地预览打不开登录。</p>
+      <p class="gate-note">忘记密码的话告诉我，我在后台帮你重设。</p>
     </div>
   </div>
 

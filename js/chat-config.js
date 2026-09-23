@@ -1,12 +1,16 @@
 /* ==========================================================
    ZOONN 之城 - 留言对话窗口 · 云端配置
    ----------------------------------------------------------
-   这两项来自云服务开通时返回的 publicConfig，是唯一可以
-   放进前端代码的值（publishableKey 本身不带权限，服务端
-   靠 Origin 校验）。不要改动，也不要把它写进日志。
+   后端：Supabase（Project: zoonn-city-chat，区域 东京）
+   这两项是 Supabase 的 Project URL 与 anon public key，
+   本身就是设计给前端公开使用的值，泄露没有风险。
+   真正的安全边界是数据库里的行级安全策略（RLS）：
+     · 访客可写 role='visitor'，可读全部
+     · 只有登录用户能写 role='host'
+   不要改动，也不要把它写进日志。
    ========================================================== */
 
 window.ZOONN_CHAT_CONFIG = {
-  endpoint: 'https://zoonn-chat.app.workbuddy.host',
-  publishableKey: 'wbpk_EoxwX7wc5kSlqP43f5d1H0_rW1bU7Gd2OVqSb14c4wYM5ZO9nVT40aS'
+  url: 'https://wyrlvktglmytbffzjgxh.supabase.co',
+  anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5cmx2a3RnbG15dGJmZnpqZ3hoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxNTkyNjMsImV4cCI6MjEwNTczNTI2M30.-Lng3vh2RgngRlF60g13weA9TB2N0UwQxAUGk8pnj54'
 };
