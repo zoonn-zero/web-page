@@ -179,9 +179,15 @@ body.owner-page {
    ========================================================== */
 
 .owner-app {
-  display: flex;
+  display: none;
   height: 100vh;
   overflow: hidden;
+}
+
+/* 登录成功后由 JS 加 is-live 显示。
+   不能用 hidden 属性：上面/.gate-form 那类 display 声明会把它盖掉。 */
+.owner-app.is-live {
+  display: flex;
 }
 
 /* ---- 左侧会话列表 ---- */
