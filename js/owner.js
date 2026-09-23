@@ -51,6 +51,45 @@
       var match = f.getAttribute('data-panel') === name;
       f.classList.toggle('is-panel-active', match);
     });
+
+    // 初始：只显示密码登录
+    showPanel('password');
+  }
+
+  // ---------- 错误翻译 ----------
+  // 把 SDK 返回的错误码翻成人话，同时保留原始信息便于排查
+  var DEBUG = true;  // 排查期打开：错误详情会一起显示出来
+
+  function whyFailed(res) {
+    var e = (res && res.error) || {};
+    var code = e.code || e.kind || e.status || e.error || '';
+    var text = e.message || e.error_description || '';
+
+    var friendly = '';
+    if (/rate|too.?many|frequen/i.test(code + " " + text)) {
+      friendly = '发送太频繁了，等 1 分钟再试';
+    } else if (/invalid.?email|email.*invalid|邮箱/i.test(code + " " + text)) {
+      friendly = '邮箱格式不对，检查一下有没有写错';
+    } else if (/expire/i.test(code + " " + text)) {
+      friendly = '验证码已过期，重新点「发送」拿一个新的';
+    } else if (/invalid.*token|invalid.*code|wrong.*code/i.test(code + " " + text)) {
+      friendly = '验证码不对，检查有没有抄错';
+    } else if (/unauthenticated|invalid_grant/i.test(code + " " + text)) {
+      friendly = '账号或密码不对';
+    } else if (/invalid_client|credential/i.test(code + " " + text)) {
+      friendly = '这个域名的登录权限没配好，需要我处理一下';
+    } else if (/network|timeout|unavailable/i.test(code + " " + text)) {
+      friendly = '网络不稳定，稍后再试';
+    }
+
+    if (!friendly) {
+      friendly = '出错了' + (code ? '（' + code + '）' : '');
+    }
+
+    if (DEBUG && (code || text)) {
+      return friendly + '　[原始：' + String(code) + ' ' + String(text).slice(0, 120) + ']';
+    }
+    return friendly;
   }
 
   function initTabs() {
@@ -112,7 +151,7 @@
           if (res.error) return msg(whyFailed(res));
           enterApp('登录成功。');
         })
-        .catch(function () {
+        .catch(function (err) {
           busy(btn, false);
           msg('连不上，稍后再试');
         });
