@@ -24,6 +24,7 @@
 
       <!-- 密码登录 -->
       <form class="gate-form" id="formPassword" data-panel="password">
+        <p class="gate-tip">已经注册过就用这里。<br>没注册过？点上面的「注册」。</p>
         <input type="email" class="gate-input" id="pwEmail" placeholder="邮箱" autocomplete="username">
         <input type="password" class="gate-input" id="pwPassword" placeholder="密码" autocomplete="current-password">
         <button type="submit" class="gate-btn">登录</button>
@@ -32,6 +33,7 @@
 
       <!-- 验证码登录 -->
       <form class="gate-form" id="formOtp" data-panel="otp" hidden>
+        <p class="gate-tip">忘了密码也能进：填邮箱收验证码就行。</p>
         <input type="email" class="gate-input" id="otpEmail" placeholder="邮箱">
         <div class="gate-row">
           <input type="text" class="gate-input" id="otpCode" placeholder="6 位验证码" inputmode="numeric">
@@ -42,6 +44,7 @@
 
       <!-- 注册（邮箱验证 + 设密码） -->
       <form class="gate-form" id="formSignup" data-panel="signup" hidden>
+        <p class="gate-tip">第一次用走这里：填邮箱 → 点「发送」→ 收邮件拿 6 位码 → 设密码 → 提交。<br>提交成功后会自动进入后台，看到「来访的人」列表就算成功。</p>
         <input type="email" class="gate-input" id="suEmail" placeholder="邮箱">
         <div class="gate-row">
           <input type="text" class="gate-input" id="suCode" placeholder="6 位验证码" inputmode="numeric">
@@ -75,7 +78,7 @@
         <button class="side-refresh" id="refreshRooms" title="刷新">↻</button>
       </div>
       <div class="side-list" id="roomList">
-        <div class="side-empty">还没有人来过。</div>
+        <div class="side-empty">还没有人来过。<br><br>想看效果的话，去 <b>zoonn.org</b> 右下角发一条消息，这里马上就会出现。</div>
       </div>
       <div class="side-foot">
         <span id="ownerEmail" class="side-email"></span>
@@ -93,7 +96,7 @@
       </header>
 
       <div class="owner-thread" id="thread">
-        <div class="thread-empty">左边选一个来访者，就能看到他说了什么。没有人的时候，去主站自己发一条试试。</div>
+        <div class="thread-empty">左边选一个来访者，就能看到他说了什么。<br><br>列表还是空的话，去主站 <b>zoonn.org</b> 右下角自己发一条，回来这儿就能看到。</div>
       </div>
 
       <form class="owner-compose" id="ownerCompose" hidden>

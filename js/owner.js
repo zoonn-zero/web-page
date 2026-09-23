@@ -83,7 +83,7 @@
         .then(function (res) {
           busy(btn, false);
           if (res.error) return msg('账号或密码不对');
-          enterApp();
+          enterApp('登录成功。');
         })
         .catch(function () {
           busy(btn, false);
@@ -123,7 +123,7 @@
         busy(btn, false);
         if (res.error) return msg('验证码不对或已过期');
         global.__otpVerify = null;
-        enterApp();
+        enterApp('登录成功。');
       }).catch(function () {
         busy(btn, false);
         msg('连不上，稍后再试');
@@ -142,7 +142,21 @@
         busy(btn, false);
         if (res.error) return msg('验证码没发出去，检查邮箱是否写对');
         global.__suOtp = res.data;
-        msg('验证码已发到邮箱', true);
+
+        // 新邮箱才显示「设密码」；已注册过的邮箱引导去登录，不暴露账号是否存在
+        var pwField = $('suPassword');
+        var submitBtn = $('formSignup').querySelector('.gate-btn');
+        if (res.data.isExistingUser) {
+          pwField.hidden = true;
+          pwField.value = '';
+          pwField.removeAttribute('required');
+          submitBtn.textContent = '验证并登录';
+          msg('验证码已发到邮箱。这个邮箱之前用过，验证后直接登录。', true);
+        } else {
+          pwField.hidden = false;
+          submitBtn.textContent = '注册并登录';
+          msg('验证码已发到邮箱，再设一个密码就完成注册。', true);
+        }
       }).catch(function () {
         busy(btn, false);
         msg('连不上，稍后再试');
@@ -153,24 +167,29 @@
       e.preventDefault();
       var btn = this.querySelector('.gate-btn');
       var code = $('suCode').value.trim();
-      var password = $('suPassword').value;
       var email = $('suEmail').value.trim();
       if (!global.__suOtp) return msg('先点「发送」拿验证码');
       if (!code) return msg('填一下收到的验证码');
-      if (password.length < 6) return msg('密码至少 6 位');
 
-      busy(btn, true, '注册中…');
+      var existing = !!global.__suOtp.isExistingUser;
+      var password = $('suPassword').value;
+
+      if (!existing) {
+        if (password.length < 6) return msg('密码至少 6 位');
+      }
+
+      busy(btn, true, '提交中…');
       cloud.auth.verifyOtp({
         verificationId: global.__suOtp.verificationId,
         token: code,
         email: email,
         isExistingUser: global.__suOtp.isExistingUser,
-        password: global.__suOtp.isExistingUser ? undefined : password
+        password: existing ? undefined : password
       }).then(function (res) {
         busy(btn, false);
-        if (res.error) return msg('验证码不对，或这个邮箱已经注册过了');
+        if (res.error) return msg('验证码不对或已过期，重新点「发送」再试一次');
         global.__suOtp = null;
-        enterApp();
+        enterApp('注册成功，已经登录。');
       }).catch(function () {
         busy(btn, false);
         msg('连不上，稍后再试');
@@ -209,7 +228,7 @@
         busy(btn, false);
         if (res.error) return msg('验证码不对或已过期');
         global.__rsCb = null;
-        enterApp();
+        enterApp('密码已重设，已经登录。');
       }).catch(function () {
         busy(btn, false);
         msg('连不上，稍后再试');
@@ -219,7 +238,7 @@
 
   // ---------- 进入后台 ----------
 
-  function enterApp() {
+  function enterApp(notice) {
     el.ownerGate.hidden = true;
     el.ownerApp.hidden = false;
 
@@ -227,6 +246,12 @@
       var u = res && res.data && res.data.user;
       if (u && u.email) el.ownerEmail.textContent = u.email;
     }).catch(function () {});
+
+    // 顶部给一条明确的成功提示，避免"点了没反应"的疑惑
+    if (notice) {
+      el.mainSub.textContent = notice;
+      el.mainSub.classList.add('is-ok');
+    }
 
     loadRooms();
     if (!timer) {
@@ -247,7 +272,7 @@
       rooms = (res && res.data) || [];
 
       if (!rooms.length) {
-        el.roomList.innerHTML = '<div class="side-empty">还没有人来过。</div>';
+        el.roomList.innerHTML = '<div class="side-empty">还没有人来过。<br><br>想看效果的话，去 <b>zoonn.org</b> 右下角发一条消息，这里马上就会出现。</div>';
         return;
       }
 
