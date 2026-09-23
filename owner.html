@@ -23,7 +23,7 @@
       </div>
 
       <!-- 密码登录 -->
-      <form class="gate-form" id="formPassword" data-panel="password">
+      <form class="gate-form is-panel-active" id="formPassword" data-panel="password">
         <p class="gate-tip">已经注册过就用这里。<br>没注册过？点上面的「注册」。</p>
         <input type="email" class="gate-input" id="pwEmail" placeholder="邮箱" autocomplete="username">
         <input type="password" class="gate-input" id="pwPassword" placeholder="密码" autocomplete="current-password">
@@ -32,7 +32,7 @@
       </form>
 
       <!-- 验证码登录 -->
-      <form class="gate-form" id="formOtp" data-panel="otp" hidden>
+      <form class="gate-form" id="formOtp" data-panel="otp">
         <p class="gate-tip">忘了密码也能进：填邮箱收验证码就行。</p>
         <input type="email" class="gate-input" id="otpEmail" placeholder="邮箱">
         <div class="gate-row">
@@ -43,7 +43,7 @@
       </form>
 
       <!-- 注册（邮箱验证 + 设密码） -->
-      <form class="gate-form" id="formSignup" data-panel="signup" hidden>
+      <form class="gate-form" id="formSignup" data-panel="signup">
         <p class="gate-tip">第一次用走这里：填邮箱 → 点「发送」→ 收邮件拿 6 位码 → 设密码 → 提交。<br>提交成功后会自动进入后台，看到「来访的人」列表就算成功。</p>
         <input type="email" class="gate-input" id="suEmail" placeholder="邮箱">
         <div class="gate-row">
@@ -55,7 +55,8 @@
       </form>
 
       <!-- 重置密码 -->
-      <form class="gate-form" id="formReset" data-panel="reset" hidden>
+      <form class="gate-form" id="formReset" data-panel="reset">
+        <p class="gate-tip">收邮件验证码后重设密码。</p>
         <input type="email" class="gate-input" id="rsEmail" placeholder="邮箱">
         <div class="gate-row">
           <input type="text" class="gate-input" id="rsCode" placeholder="6 位验证码" inputmode="numeric">
@@ -71,7 +72,7 @@
   </div>
 
   <!-- ===== 已登录：会话列表 + 对话 ===== -->
-  <div class="owner-app" id="ownerApp" hidden>
+  <div class="owner-app" id="ownerApp">
     <aside class="owner-side">
       <div class="side-head">
         <div class="side-title">来访的人</div>
@@ -92,14 +93,14 @@
           <div class="main-title" id="mainTitle">选一个人开始</div>
           <div class="main-sub" id="mainSub">左侧列表按最近活动排序</div>
         </div>
-        <button class="main-btn" id="toggleLive" hidden>暂停自动刷新</button>
+        <button class="main-btn is-hidden" id="toggleLive">暂停自动刷新</button>
       </header>
 
       <div class="owner-thread" id="thread">
         <div class="thread-empty">左边选一个来访者，就能看到他说了什么。<br><br>列表还是空的话，去主站 <b>zoonn.org</b> 右下角自己发一条，回来这儿就能看到。</div>
       </div>
 
-      <form class="owner-compose" id="ownerCompose" hidden>
+      <form class="owner-compose" id="ownerCompose">
         <textarea class="owner-input" id="ownerInput" rows="1" maxlength="2000" placeholder="以 zoonn 的身份回复…（Enter 发送，Shift+Enter 换行）"></textarea>
         <button type="submit" class="owner-send" id="ownerSend">回复</button>
       </form>

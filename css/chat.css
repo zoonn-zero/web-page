@@ -188,6 +188,12 @@
   flex-direction: column;
 }
 
+/* hidden 属性会被上面的 display:flex 盖掉，必须显式压回 */
+.chat-body[hidden],
+.chat-intro[hidden] {
+  display: none !important;
+}
+
 .chat-list {
   flex: 1;
   min-height: 0;

@@ -44,6 +44,15 @@
 
   // ---------- 登录闸门 ----------
 
+  // 只显示指定 panel 的表单，其余隐藏。
+  // 用 class 而不是 hidden 属性：hidden 只是 UA 样式，会被 display:flex 覆盖。
+  function showPanel(name) {
+    document.querySelectorAll('.gate-form').forEach(function (f) {
+      var match = f.getAttribute('data-panel') === name;
+      f.classList.toggle('is-panel-active', match);
+    });
+  }
+
   function initTabs() {
     el.gateTabs.querySelectorAll('.gate-tab').forEach(function (tab) {
       tab.addEventListener('click', function () {
@@ -51,9 +60,7 @@
         el.gateTabs.querySelectorAll('.gate-tab').forEach(function (t) {
           t.classList.toggle('is-active', t === tab);
         });
-        document.querySelectorAll('.gate-form').forEach(function (f) {
-          f.hidden = f.getAttribute('data-panel') !== name;
-        });
+        showPanel(name);
         msg('');
       });
     });
@@ -62,11 +69,48 @@
       el.gateTabs.querySelectorAll('.gate-tab').forEach(function (t) {
         t.classList.remove('is-active');
       });
-      document.querySelectorAll('.gate-form').forEach(function (f) {
-        f.hidden = f.getAttribute('data-panel') !== 'reset';
-      });
+      showPanel('reset');
       msg('');
     });
+
+    // 初始：只显示密码登录
+    showPanel('password');
+  }
+
+  // ---------- 错误翻译 ----------
+  // 把 SDK 返回的错误码翻成人话，同时保留原始信息便于排查
+  var DEBUG = true;  // 排查期打开：错误详情会一起显示出来
+
+  function whyFailed(res) {
+    var e = (res && res.error) || {};
+    var code = e.code || e.kind || e.status || e.error || '';
+    var text = e.message || e.error_description || '';
+
+    var friendly = '';
+    if (/rate|too.?many|frequen/i.test(code + " " + text)) {
+      friendly = '发送太频繁了，等 1 分钟再试';
+    } else if (/invalid.?email|email.*invalid|邮箱/i.test(code + " " + text)) {
+      friendly = '邮箱格式不对，检查一下有没有写错';
+    } else if (/expire/i.test(code + " " + text)) {
+      friendly = '验证码已过期，重新点「发送」拿一个新的';
+    } else if (/invalid.*token|invalid.*code|wrong.*code/i.test(code + " " + text)) {
+      friendly = '验证码不对，检查有没有抄错';
+    } else if (/unauthenticated|invalid_grant/i.test(code + " " + text)) {
+      friendly = '账号或密码不对';
+    } else if (/invalid_client|credential/i.test(code + " " + text)) {
+      friendly = '这个域名的登录权限没配好，需要我处理一下';
+    } else if (/network|timeout|unavailable/i.test(code + " " + text)) {
+      friendly = '网络不稳定，稍后再试';
+    }
+
+    if (!friendly) {
+      friendly = '出错了' + (code ? '（' + code + '）' : '');
+    }
+
+    if (DEBUG && (code || text)) {
+      return friendly + '　[原始：' + String(code) + ' ' + String(text).slice(0, 120) + ']';
+    }
+    return friendly;
   }
 
   // --- 密码登录 ---
@@ -82,10 +126,10 @@
       cloud.auth.signInWithPassword({ email: email, password: password })
         .then(function (res) {
           busy(btn, false);
-          if (res.error) return msg('账号或密码不对');
+          if (res.error) return msg(whyFailed(res));
           enterApp('登录成功。');
         })
-        .catch(function () {
+        .catch(function (err) {
           busy(btn, false);
           msg('连不上，稍后再试');
         });
@@ -102,7 +146,7 @@
       busy(btn, true, '发送中…');
       cloud.auth.signInWithOtp({ email: email }).then(function (res) {
         busy(btn, false);
-        if (res.error) return msg('验证码没发出去，检查邮箱是否写对');
+        if (res.error) return msg(whyFailed(res));
         global.__otpVerify = res.data.verify;
         msg('验证码已发到邮箱', true);
       }).catch(function () {
@@ -121,7 +165,7 @@
       busy(btn, true, '校验中…');
       global.__otpVerify({ token: code }).then(function (res) {
         busy(btn, false);
-        if (res.error) return msg('验证码不对或已过期');
+        if (res.error) return msg(whyFailed(res));
         global.__otpVerify = null;
         enterApp('登录成功。');
       }).catch(function () {
@@ -140,20 +184,19 @@
       busy(btn, true, '发送中…');
       cloud.auth.sendOtp({ email: email }).then(function (res) {
         busy(btn, false);
-        if (res.error) return msg('验证码没发出去，检查邮箱是否写对');
+        if (res.error) return msg(whyFailed(res));
         global.__suOtp = res.data;
 
         // 新邮箱才显示「设密码」；已注册过的邮箱引导去登录，不暴露账号是否存在
         var pwField = $('suPassword');
         var submitBtn = $('formSignup').querySelector('.gate-btn');
         if (res.data.isExistingUser) {
-          pwField.hidden = true;
+          pwField.classList.add('is-hidden');
           pwField.value = '';
-          pwField.removeAttribute('required');
           submitBtn.textContent = '验证并登录';
           msg('验证码已发到邮箱。这个邮箱之前用过，验证后直接登录。', true);
         } else {
-          pwField.hidden = false;
+          pwField.classList.remove('is-hidden');
           submitBtn.textContent = '注册并登录';
           msg('验证码已发到邮箱，再设一个密码就完成注册。', true);
         }
@@ -187,7 +230,7 @@
         password: existing ? undefined : password
       }).then(function (res) {
         busy(btn, false);
-        if (res.error) return msg('验证码不对或已过期，重新点「发送」再试一次');
+        if (res.error) return msg(whyFailed(res));
         global.__suOtp = null;
         enterApp('注册成功，已经登录。');
       }).catch(function () {
@@ -206,7 +249,7 @@
       busy(btn, true, '发送中…');
       cloud.auth.resetPasswordForEmail(email).then(function (res) {
         busy(btn, false);
-        if (res.error) return msg('发送失败，检查邮箱');
+        if (res.error) return msg(whyFailed(res));
         global.__rsCb = res.data;
         msg('验证码已发到邮箱', true);
       }).catch(function () {
@@ -226,7 +269,7 @@
       busy(btn, true, '提交中…');
       global.__rsCb.updateUser({ nonce: code, password: password }).then(function (res) {
         busy(btn, false);
-        if (res.error) return msg('验证码不对或已过期');
+        if (res.error) return msg(whyFailed(res));
         global.__rsCb = null;
         enterApp('密码已重设，已经登录。');
       }).catch(function () {
@@ -240,7 +283,8 @@
 
   function enterApp(notice) {
     el.ownerGate.hidden = true;
-    el.ownerApp.hidden = false;
+    // 用 class 而不是 hidden 属性：.owner-app 的 display:flex 会盖掉 hidden
+    el.ownerApp.classList.add('is-live');
 
     cloud.auth.getUser().then(function (res) {
       var u = res && res.data && res.data.user;
@@ -313,8 +357,8 @@
     lastId = 0;
     el.mainTitle.textContent = room.visitor_name || '匿名访客';
     el.mainSub.textContent = '首次出现 ' + API.timeAgo(room.created_at);
-    el.ownerCompose.hidden = false;
-    el.toggleLive.hidden = false;
+    el.ownerCompose.classList.add('is-live');
+    el.toggleLive.classList.remove('is-hidden');
 
     el.roomList.querySelectorAll('.room-item').forEach(function (it) {
       it.classList.toggle('is-active', it.getAttribute('data-room') === roomId);
