@@ -15,7 +15,9 @@
 (function (global) {
   'use strict';
 
-  var SDK_URL = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js';
+  // SDK 放在自己仓库里，不依赖第三方 CDN：
+  // CDN 一旦不可达，留言与后台会整体失效，而这个站的核心价值就是留言。
+  var SDK_URL = 'js/vendor/supabase.js';
 
   // 本地记住房号与昵称：刷新页面后接着聊，不用重新输名字
   var LS_ROOM = 'zoonn_chat_room';
