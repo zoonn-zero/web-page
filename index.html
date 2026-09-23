@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="TuHffenUcVLoeajuGwA0my">
   <title>ZOONN 之城 - Zoonn's City</title>
   <link rel="stylesheet" href="css/style.css" data-page-node-id="7Am3Bf6ky5BV7Ctt5zmAZE">
+  <link rel="stylesheet" href="css/chat.css">
 </head>
 <body data-page-node-id="q3To0M7ZT4WkGjdm2seeuQ">
   <!-- 顶部标题栏 -->
@@ -187,11 +188,13 @@
       </div>
       <div class="message-form" data-page-node-id="i3PlphlgFaFDApeCZDiWpi">
         <h3 class="form-title" data-page-node-id="6K6KKHIFerqkGzQuZpAoRE">💬 留个言吧</h3>
+        <p class="form-hint">留完就能在右下角的对话窗口里继续聊 —— 不用注册，也不用留邮箱。</p>
         <form id="messageForm" data-page-node-id="04llOLvXVXHtfGM211qC88">
-          <input type="text" placeholder="你的名字" class="form-input" data-page-node-id="wAZhLMgOVMjzdFdOIJErbj">
-          <textarea placeholder="想说的话..." class="form-textarea" rows="4"></textarea>
+          <input type="text" id="msgName" placeholder="你的名字" class="form-input" maxlength="20" data-page-node-id="wAZhLMgOVMjzdFdOIJErbj">
+          <textarea id="msgBody" placeholder="想说的话..." class="form-textarea" rows="4" maxlength="2000"></textarea>
           <button type="submit" class="form-btn" data-page-node-id="d3MANEqtYRZibPNdGQCbKm">发送留言</button>
         </form>
+        <p class="form-status" id="msgStatus" hidden></p>
       </div>
     </div>
   </div>
@@ -241,5 +244,8 @@
 
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/chat-config.js"></script>
+  <script src="js/chat-core.js"></script>
+  <script src="js/chat-widget.js"></script>
 </body>
 </html>

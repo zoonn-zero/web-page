@@ -1,0 +1,469 @@
+/* ==========================================================
+   ZOONN 之城 - 留言后台
+   ----------------------------------------------------------
+   你自己用的页面：登录后能看到所有来访者，并以 host 身份回复。
+   访客那端完全不需要登录。
+   ========================================================== */
+
+(function (global) {
+  'use strict';
+
+  var POLL_MS = 2000;
+  var API = global.ZoonnChat;
+  if (!API) return;
+
+  var cloud = null;
+  var roomId = null;
+  var rooms = [];
+  var lastId = 0;
+  var timer = null;
+  var live = true;
+  var sending = false;
+
+  var el = {};
+
+  function $(id) { return document.getElementById(id); }
+
+  // ---------- 消息提示 ----------
+
+  function msg(text, ok) {
+    el.gateMsg.textContent = text || '';
+    el.gateMsg.className = 'gate-msg' + (ok ? ' is-ok' : '');
+  }
+
+  function busy(btn, on, label) {
+    if (!btn) return;
+    btn.disabled = !!on;
+    if (on) {
+      btn.dataset.label = btn.textContent;
+      btn.textContent = label || '处理中…';
+    } else if (btn.dataset.label) {
+      btn.textContent = btn.dataset.label;
+    }
+  }
+
+  // ---------- 登录闸门 ----------
+
+  function initTabs() {
+    el.gateTabs.querySelectorAll('.gate-tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var name = tab.getAttribute('data-tab');
+        el.gateTabs.querySelectorAll('.gate-tab').forEach(function (t) {
+          t.classList.toggle('is-active', t === tab);
+        });
+        document.querySelectorAll('.gate-form').forEach(function (f) {
+          f.hidden = f.getAttribute('data-panel') !== name;
+        });
+        msg('');
+      });
+    });
+
+    $('toReset').addEventListener('click', function () {
+      el.gateTabs.querySelectorAll('.gate-tab').forEach(function (t) {
+        t.classList.remove('is-active');
+      });
+      document.querySelectorAll('.gate-form').forEach(function (f) {
+        f.hidden = f.getAttribute('data-panel') !== 'reset';
+      });
+      msg('');
+    });
+  }
+
+  // --- 密码登录 ---
+  function bindPassword() {
+    $('formPassword').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = this.querySelector('.gate-btn');
+      var email = $('pwEmail').value.trim();
+      var password = $('pwPassword').value;
+      if (!email || !password) return msg('邮箱和密码都要填');
+
+      busy(btn, true, '登录中…');
+      cloud.auth.signInWithPassword({ email: email, password: password })
+        .then(function (res) {
+          busy(btn, false);
+          if (res.error) return msg('账号或密码不对');
+          enterApp();
+        })
+        .catch(function () {
+          busy(btn, false);
+          msg('连不上，稍后再试');
+        });
+    });
+  }
+
+  // --- 验证码登录 ---
+  function bindOtp() {
+    // signInWithOtp 会把「校验验证码」的回调放在返回值里，需要留到下一步用
+    $('sendOtp').addEventListener('click', function () {
+      var btn = this;
+      var email = $('otpEmail').value.trim();
+      if (!email) return msg('先填邮箱');
+      busy(btn, true, '发送中…');
+      cloud.auth.signInWithOtp({ email: email }).then(function (res) {
+        busy(btn, false);
+        if (res.error) return msg('验证码没发出去，检查邮箱是否写对');
+        global.__otpVerify = res.data.verify;
+        msg('验证码已发到邮箱', true);
+      }).catch(function () {
+        busy(btn, false);
+        msg('连不上，稍后再试');
+      });
+    });
+
+    $('formOtp').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = this.querySelector('.gate-btn');
+      var code = $('otpCode').value.trim();
+      if (!global.__otpVerify) return msg('先点「发送」拿验证码');
+      if (!code) return msg('填一下收到的验证码');
+
+      busy(btn, true, '校验中…');
+      global.__otpVerify({ token: code }).then(function (res) {
+        busy(btn, false);
+        if (res.error) return msg('验证码不对或已过期');
+        global.__otpVerify = null;
+        enterApp();
+      }).catch(function () {
+        busy(btn, false);
+        msg('连不上，稍后再试');
+      });
+    });
+  }
+
+  // --- 注册（邮箱验证 + 设密码） ---
+  function bindSignup() {
+    $('suSend').addEventListener('click', function () {
+      var btn = this;
+      var email = $('suEmail').value.trim();
+      if (!email) return msg('先填邮箱');
+      busy(btn, true, '发送中…');
+      cloud.auth.sendOtp({ email: email }).then(function (res) {
+        busy(btn, false);
+        if (res.error) return msg('验证码没发出去，检查邮箱是否写对');
+        global.__suOtp = res.data;
+        msg('验证码已发到邮箱', true);
+      }).catch(function () {
+        busy(btn, false);
+        msg('连不上，稍后再试');
+      });
+    });
+
+    $('formSignup').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = this.querySelector('.gate-btn');
+      var code = $('suCode').value.trim();
+      var password = $('suPassword').value;
+      var email = $('suEmail').value.trim();
+      if (!global.__suOtp) return msg('先点「发送」拿验证码');
+      if (!code) return msg('填一下收到的验证码');
+      if (password.length < 6) return msg('密码至少 6 位');
+
+      busy(btn, true, '注册中…');
+      cloud.auth.verifyOtp({
+        verificationId: global.__suOtp.verificationId,
+        token: code,
+        email: email,
+        isExistingUser: global.__suOtp.isExistingUser,
+        password: global.__suOtp.isExistingUser ? undefined : password
+      }).then(function (res) {
+        busy(btn, false);
+        if (res.error) return msg('验证码不对，或这个邮箱已经注册过了');
+        global.__suOtp = null;
+        enterApp();
+      }).catch(function () {
+        busy(btn, false);
+        msg('连不上，稍后再试');
+      });
+    });
+  }
+
+  // --- 重置密码 ---
+  function bindReset() {
+    $('rsSend').addEventListener('click', function () {
+      var btn = this;
+      var email = $('rsEmail').value.trim();
+      if (!email) return msg('先填邮箱');
+      busy(btn, true, '发送中…');
+      cloud.auth.resetPasswordForEmail(email).then(function (res) {
+        busy(btn, false);
+        if (res.error) return msg('发送失败，检查邮箱');
+        global.__rsCb = res.data;
+        msg('验证码已发到邮箱', true);
+      }).catch(function () {
+        busy(btn, false);
+        msg('连不上，稍后再试');
+      });
+    });
+
+    $('formReset').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = this.querySelector('.gate-btn');
+      var code = $('rsCode').value.trim();
+      var password = $('rsPassword').value;
+      if (!global.__rsCb) return msg('先点「发送」拿验证码');
+      if (password.length < 6) return msg('新密码至少 6 位');
+
+      busy(btn, true, '提交中…');
+      global.__rsCb.updateUser({ nonce: code, password: password }).then(function (res) {
+        busy(btn, false);
+        if (res.error) return msg('验证码不对或已过期');
+        global.__rsCb = null;
+        enterApp();
+      }).catch(function () {
+        busy(btn, false);
+        msg('连不上，稍后再试');
+      });
+    });
+  }
+
+  // ---------- 进入后台 ----------
+
+  function enterApp() {
+    el.ownerGate.hidden = true;
+    el.ownerApp.hidden = false;
+
+    cloud.auth.getUser().then(function (res) {
+      var u = res && res.data && res.data.user;
+      if (u && u.email) el.ownerEmail.textContent = u.email;
+    }).catch(function () {});
+
+    loadRooms();
+    if (!timer) {
+      timer = global.setInterval(function () {
+        if (live && roomId) pollThread();
+      }, POLL_MS);
+      global.setInterval(function () {
+        if (live) loadRooms(true);
+      }, 10000);
+    }
+  }
+
+  // ---------- 会话列表 ----------
+
+  function loadRooms(silent) {
+    return API.fetchRecentRooms(60).then(function (res) {
+      if (res && res.error) return;
+      rooms = (res && res.data) || [];
+
+      if (!rooms.length) {
+        el.roomList.innerHTML = '<div class="side-empty">还没有人来过。</div>';
+        return;
+      }
+
+      var current = roomId;
+      el.roomList.innerHTML = '';
+
+      rooms.forEach(function (r) {
+        var item = document.createElement('div');
+        item.className = 'room-item' + (r.id === current ? ' is-active' : '');
+        item.setAttribute('data-room', r.id);
+
+        var name = document.createElement('div');
+        name.className = 'room-name';
+        var label = document.createElement('span');
+        label.textContent = r.visitor_name || '匿名访客';
+        name.appendChild(label);
+
+        var time = document.createElement('div');
+        time.className = 'room-time';
+        time.textContent = API.timeAgo(r.last_active || r.created_at);
+
+        item.appendChild(name);
+        item.appendChild(time);
+
+        item.addEventListener('click', function () {
+          openRoom(r);
+        });
+
+        el.roomList.appendChild(item);
+      });
+    }).catch(function () {});
+  }
+
+  // ---------- 打开某个人的对话 ----------
+
+  function openRoom(room) {
+    roomId = room.id;
+    lastId = 0;
+    el.mainTitle.textContent = room.visitor_name || '匿名访客';
+    el.mainSub.textContent = '首次出现 ' + API.timeAgo(room.created_at);
+    el.ownerCompose.hidden = false;
+    el.toggleLive.hidden = false;
+
+    el.roomList.querySelectorAll('.room-item').forEach(function (it) {
+      it.classList.toggle('is-active', it.getAttribute('data-room') === roomId);
+    });
+
+    loadThread();
+  }
+
+  function loadThread() {
+    return API.fetchMessages(roomId, 0).then(function (res) {
+      if (res && res.error) return;
+      var rows = (res && res.data) || [];
+      el.thread.innerHTML = '';
+      lastId = 0;
+
+      if (!rows.length) {
+        el.thread.innerHTML = '<div class="thread-empty">这个人还没说话。</div>';
+        return;
+      }
+
+      rows.forEach(function (m) {
+        appendMsg(m);
+        if (m.id > lastId) lastId = m.id;
+      });
+    }).catch(function () {});
+  }
+
+  function pollThread() {
+    API.fetchMessages(roomId, lastId).then(function (res) {
+      var rows = (res && res.data) || [];
+      if (!rows.length) return;
+      rows.forEach(function (m) {
+        appendMsg(m);
+        if (m.id > lastId) lastId = m.id;
+      });
+      // 主要是访客发来新消息时，顺手把列表的时间刷新一下
+      if (rows.some(function (m) { return m.role === 'visitor'; })) loadRooms(true);
+    }).catch(function () {});
+  }
+
+  function appendMsg(m) {
+    var empty = el.thread.querySelector('.thread-empty');
+    if (empty) empty.remove();
+
+    var mine = m.role === 'host';
+    var row = document.createElement('div');
+    row.className = 'owner-row ' + (mine ? 'is-host' : 'is-visitor');
+
+    var bubble = document.createElement('div');
+    bubble.className = 'owner-bubble';
+    API.lines(bubble, m.body);
+
+    var meta = document.createElement('div');
+    meta.className = 'owner-meta';
+    meta.textContent = (mine ? '你' : (el.mainTitle.textContent || '访客')) +
+      ' · ' + API.hhmm(m.created_at);
+
+    row.appendChild(bubble);
+    row.appendChild(meta);
+    el.thread.appendChild(row);
+    el.thread.scrollTop = el.thread.scrollHeight;
+  }
+
+  // ---------- 回复 ----------
+
+  function bindCompose() {
+    el.ownerCompose.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var text = (el.ownerInput.value || '').trim();
+      if (!text || sending || !roomId) return;
+
+      sending = true;
+      el.ownerSend.disabled = true;
+      el.ownerInput.value = '';
+      el.ownerInput.style.height = 'auto';
+
+      API.sendMessage(roomId, 'host', text).then(function (res) {
+        sending = false;
+        el.ownerSend.disabled = false;
+
+        if (res && res.error) {
+          global.alert('这条没发出去：' + (res.error.message || '未知错误'));
+          el.ownerInput.value = text;
+          return;
+        }
+
+        var created = (res && res.data && res.data[0]) || null;
+        if (created) {
+          appendMsg(created);
+          if (created.id > lastId) lastId = created.id;
+        } else {
+          loadThread();
+        }
+        API.touchRoom(roomId);
+      }).catch(function () {
+        sending = false;
+        el.ownerSend.disabled = false;
+        global.alert('网络好像有问题，稍后再试');
+        el.ownerInput.value = text;
+      });
+    });
+
+    el.ownerInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        el.ownerCompose.dispatchEvent(new Event('submit', { cancelable: true }));
+      }
+    });
+
+    el.ownerInput.addEventListener('input', function () {
+      el.ownerInput.style.height = 'auto';
+      el.ownerInput.style.height = Math.min(140, el.ownerInput.scrollHeight) + 'px';
+    });
+  }
+
+  // ---------- 顶栏按钮 ----------
+
+  function bindHead() {
+    el.toggleLive.addEventListener('click', function () {
+      live = !live;
+      el.toggleLive.textContent = live ? '暂停自动刷新' : '恢复自动刷新';
+    });
+
+    $('refreshRooms').addEventListener('click', function () {
+      loadRooms();
+    });
+
+    $('signOut').addEventListener('click', function () {
+      cloud.auth.signOut().then(function () {
+        global.location.reload();
+      });
+    });
+  }
+
+  // ---------- 入口 ----------
+
+  function boot() {
+    el.gateMsg = $('gateMsg');
+    el.gateTabs = $('gateTabs');
+    el.ownerGate = $('ownerGate');
+    el.ownerApp = $('ownerApp');
+    el.ownerEmail = $('ownerEmail');
+    el.roomList = $('roomList');
+    el.mainTitle = $('mainTitle');
+    el.mainSub = $('mainSub');
+    el.thread = $('thread');
+    el.ownerCompose = $('ownerCompose');
+    el.ownerInput = $('ownerInput');
+    el.ownerSend = $('ownerSend');
+    el.toggleLive = $('toggleLive');
+
+    initTabs();
+    bindHead();
+    bindCompose();
+
+    API.client().then(function (c) {
+      cloud = c;
+      bindPassword();
+      bindOtp();
+      bindSignup();
+      bindReset();
+
+      return cloud.auth.getSession();
+    }).then(function (res) {
+      var session = res && res.data;
+      if (session && session.user) enterApp();
+    }).catch(function () {
+      msg('连不上云端，检查网络后刷新重试');
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})(window);

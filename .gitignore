@@ -9,3 +9,6 @@ weekly_content.json
 
 # WorkBuddy 的本地记忆与方案草稿，不该公开到站点
 .workbuddy/
+
+# WorkBuddy 云服务的应用标记文件（本机记账用，不是站点内容）
+.wbapp_*.genie

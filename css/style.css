@@ -1208,6 +1208,24 @@ body {
   font-size: 1rem;
 }
 
+.form-hint {
+  font-size: 0.8rem;
+  color: #7b8a9a;
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.form-status {
+  font-size: 0.82rem;
+  color: #e74c3c;
+  line-height: 1.7;
+  margin-top: 12px;
+}
+
+.form-status.is-ok {
+  color: #2d8b52;
+}
+
 .form-input,
 .form-textarea {
   width: 100%;

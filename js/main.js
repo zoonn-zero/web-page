@@ -482,14 +482,59 @@ function initCat() {
 }
 
 // ===== 留言表单 =====
+// 不再只弹提示：写进云端留言板，并在右下角对话窗口里接着聊
 function initMessageForm() {
   const form = document.getElementById('messageForm');
   if (!form) return;
-  
+
+  const nameEl = document.getElementById('msgName');
+  const bodyEl = document.getElementById('msgBody');
+  const statusEl = document.getElementById('msgStatus');
+  const btn = form.querySelector('.form-btn');
+
+  function say(text, ok) {
+    if (!statusEl) return;
+    statusEl.textContent = text;
+    statusEl.className = 'form-status' + (ok ? ' is-ok' : '');
+    statusEl.hidden = false;
+  }
+
   form.addEventListener('submit', function(e) {
     e.preventDefault();
-    alert('💌 留言已收到！谢谢你的到访~');
-    form.reset();
+
+    const text = (bodyEl.value || '').trim();
+    if (!text) return say('还没写内容呢');
+    if (!window.ZoonnChat) return say('云端还没准备好，稍后再试');
+
+    const nick = (nameEl.value || '').trim().slice(0, 20);
+    if (nick) window.ZoonnChat.setNickname(nick);
+
+    btn.disabled = true;
+    btn.textContent = '发送中…';
+
+    window.ZoonnChat.ensureRoom(nick).then(function() {
+      return window.ZoonnChat.sendMessage(
+        window.ZoonnChat.getRoomId(), 'visitor', text
+      );
+    }).then(function(res) {
+      btn.disabled = false;
+      btn.textContent = '发送留言';
+
+      if (res && res.error) {
+        return say('这条没发出去，再试一次？');
+      }
+
+      form.reset();
+      say('💌 留言已收到！右下角可以继续聊 —— ' + text.slice(0, 8) + (text.length > 8 ? '…' : ''), true);
+
+      // 顺手把窗口打开，让人知道能接着对话
+      const launcher = document.getElementById('chatLauncher');
+      if (launcher) launcher.click();
+    }).catch(function() {
+      btn.disabled = false;
+      btn.textContent = '发送留言';
+      say('网络好像有问题，稍后再试');
+    });
   });
 }
 
