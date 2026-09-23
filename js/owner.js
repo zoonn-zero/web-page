@@ -51,9 +51,6 @@
       var match = f.getAttribute('data-panel') === name;
       f.classList.toggle('is-panel-active', match);
     });
-
-    // 初始：只显示密码登录
-    showPanel('password');
   }
 
   // ---------- 错误翻译 ----------
