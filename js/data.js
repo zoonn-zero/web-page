@@ -101,6 +101,12 @@ const projects = [
     description: "给个人做的展示型网站，做过的样张都放在作品集里。",
     icon: "🖥️",
     url: "https://work.zoonn.org"
+  },
+  {
+    name: "网页动效开发",
+    description: "做会动起来的网页：滚动叙事、物理模拟、能拖能拽的真交互。样张已进作品集。",
+    icon: "🎬",
+    url: "https://work.zoonn.org/sites/two-of-us/"
   }
 ];
 
