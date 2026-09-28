@@ -205,6 +205,30 @@ const magazines = [
 // ▲▲▲ 自动更新区 ▲▲▲
 const weeklyIssues = [
   {
+    vol: 5,
+    date: "2026-09-28",
+    headline: "开源阵营集体上探，智能体竞争转向执行层",
+    summary: "小米以 347 万美元后训练登顶开源榜首，美团的长程智能体模型同周上线，资本转向执行层。",
+    minutes: 8,
+    items: [
+      { level: "lead", tag: "模型与产品发布", heading: "小米开源全模态 MiMo-V2.6，只把强化学习规模做大就登上开源榜首", detail: "9 月 22 日，小米发布并开源 MiMo-V2.6 系列，含全模态旗舰 Pro、高效推理 Flash 与超高速模式 Pro-Ultraspeed，架构与参数规模不变，只是大幅扩大强化学习后训练的算力与数据。据 Artificial Analysis 综合智能指数，Pro 以 46 分列全球开源与国产模型第一，实测单任务成本 0.13 美元，API 定价沿用 V2.5，官方称同等智能水平下价格约为海外模型的 1/20 至 1/60。长程软件工程评测中，Flash 由 48.8 升至 65.68、Pro 由 58.4 升至 72.57；约 6 天的后训练花费合计超过 347 万美元，累计约 75 万条轨迹。小米同时开放了权重、端到端 RL 训练框架、7000 余个任务环境与轻量化 Agent 框架。", comment: "点评：值得记的不是榜首，而是「不改架构、只加 RL 规模」就能涨 14 分——下一轮开源模型的差距可能来自奖励设计与算力，而不是参数量。", stats: [ { label: "Artificial Analysis 智能指数", value: "46 分（开源 / 国产第一）" }, { label: "实测单任务成本", value: "$0.13" }, { label: "Pro 长程软件工程得分", value: "58.4 → 72.57" } ] },
+      { level: "key", tag: "模型与产品发布", heading: "美团上线 LongCat-2.5-Preview，把长上下文模型改成面向终端的智能体", detail: "9 月 25 日，美团上线 LongCat-2.5-Preview，延续 1.6T 总参数、约 48B 激活参数的 MoE 架构与 1M token 上下文，新增原生图像理解，最大输出 128K token，主打终端、浏览器、桌面软件、电子表格与设计工具里的长流程任务。API 同时兼容 OpenAI 与 Anthropic 接口，官方给出 Codex、OpenCode、OpenClaw、Claude Code 等接入方式，并向老用户发放 500 万免费 token。官方尚未公布基准成绩，GUI 操作与长程任务的具体提升暂无公开数据可对比。", comment: "点评：先卡接口兼容与分发、把性能验证后置，是很务实的一步；但对使用方来说，没有基准的开源预览版意味着得自己先跑一轮再决定要不要迁移。" },
+      { level: "key", tag: "研究突破", heading: "斯坦福把论文变成可对话的智能体，Paper2Agent 登上《Nature》", detail: "2026 年 9 月，斯坦福 James Zou 团队在《Nature》发表 Paper2Agent：工具自动抓取论文正文、代码与数据集并存入 MCP 服务器，再由一支智能体团队自行构建可复用的工具，研究者接入任意大模型即可与该论文对话、把其中的方法应用到新数据。团队在谷歌 DeepMind 的 AlphaGenome 论文上做了验证，并演示了不同学科论文智能体之间的自主协作。研究者把这套方案的定位表述为：让论文从被动文献变成可主动运行的系统，从而降低复现门槛。", comment: "点评：这件工作的重要性可能超过任何单次模型发布——复现的瓶颈正从算力转向接口标准化。谁定义了「论文即服务」的格式，谁就握住了科研工作流的入口。" },
+      { level: "key", tag: "AI 工具与效率玩法", heading: "编码智能体转向云端执行：会话上云、指令文件统一、订阅分层", detail: "9 月下旬，Anthropic 把 Claude Code 云会话转为正式可用：智能体在 Anthropic 服务器上跑构建与测试，关掉笔记本仍继续，Pro 与 Max 订阅者分别可领 100 美元与 250 美元免费额度（10 月 7 日前领取、11 月 4 日前使用）。同一版本起，Claude Code 2.1.277 在没有 CLAUDE.md 时会原生读取 AGENTS.md，也就是 OpenAI 捐给 Linux 基金会 Agentic AI Foundation 的指令文件标准，编码工具的配置格式开始收敛到同一份文件。定价同步分层：Cursor 推出免费 Hobby 计划、OpenAI Codex 推出 0 美元 Free 计划，Claude Code Pro 改为年付 17 美元 / 月，而 Kiro 的典型价格从 20 美元涨到 40 美元。", comment: "点评：卖点从「补全得多准」变成「能替你在云端跑多久」，说明编码智能体的成本重心正从模型调用转向执行环境；指令文件统一则实打实降低了多工具并用的迁移成本。" },
+      { level: "key", tag: "行业与资本", heading: "消费级智能体 Instinct 一个月估值翻四倍，C 轮融资 10 亿美元", detail: "9 月 28 日，旧金山智能体公司 Instinct 宣布完成 10 亿美元 C 轮，红杉、Benchmark 与 Coatue 参与，估值 100 亿美元；一个月前它的估值还是 25 亿美元，而服务要到 8 月才以邀请制上线。它的做法是给一个智能体配上自己的手机号和电脑，替用户打电话订位、缴费、取消订阅，新近加了代打电话的 Concierge 与让不同用户的智能体互相协调的「可信人网络」。公司没有公布用户数或增长指标；早期隐私政策因索取的信息范围过宽受到质疑，后已修改。同期 Baselayer 完成 3500 万美元 A 轮，专做面向智能体的身份验证与「Know Your Agent」工具。", comment: "点评：资本在赌「能替人办事」的智能体是下一个入口，但下单出错、被话术欺骗时责任归谁还没有答案——估值已经先行，可靠性还没被验证。" },
+      { level: "brief", tag: "模型与产品发布", heading: "Hcompany 开源 Holo4 智能体模型族，含 27B 稠密与 35B MoE 两档", detail: "9 月 28 日 Hcompany 开源 Holo4 系列，含 27B 稠密与 35B MoE（35B-A3B）两档，可在 GUI、代码、MCP 与 API 之间切换，权重已上 Hugging Face。" },
+      { level: "brief", tag: "模型与产品发布", heading: "谷歌发布 Gemini 3.8 Flash TTS 与 Flash-Lite TTS 两款语音模型", detail: "9 月 23 日谷歌发布两款语音模型，支持用提示词定制音色、以 30 秒样本复刻声音并逐行控制语气，已在 AI Studio 与 Gemini API 上线，Flash-Lite 面向高并发配音与本地化。" },
+      { level: "brief", tag: "模型与产品发布", heading: "英伟达开源 1 亿参数声纹分离模型，可实时分辨 8 位说话人", detail: "9 月 23 日英伟达发布 Nemotron 3 Diarization，100M 参数开放权重，可实时分辨最多 8 位说话人，在 VoiceArena 首个 Diarization-Bench 上以 14.72% 的错误率居首。" },
+      { level: "brief", tag: "模型与产品发布", heading: "黑森林实验室开源 FLUX 3 Action 世界动作模型", detail: "9 月 23 日 Black Forest Labs 开源 7B 的 FLUX 3 Action，可依相机画面与文字指令预测动作，在 RoboLab-120 上以 42.92% 的成功率居首、推理快 3.95 倍。" },
+      { level: "brief", tag: "AI 工具与效率玩法", heading: "DeepSeek Harness 桌面预览版上线，不用装 Node 也不用开终端", detail: "9 月 25 日 DeepSeek Harness 桌面预览版（V0.1.7-rc.2）上线，支持 Windows x64 与 macOS，免装 Node.js、免开终端，内置标准、PTC、极简、创造四种模式，延续「一切皆插件」架构。" },
+      { level: "brief", tag: "研究突破", heading: "斯坦福自组织智能体团队在数学与物理基准上跑出 66.7%", detail: "斯坦福等团队提出 Self-Organizing Agent Teams，让智能体从既往协作中学习角色与信息流策略，仅用 15 道数学与 25 道研究生题目训练，即在 5 个数学与物理基准上平均达 66.7%，高于最强单体成员的 48.8%。" },
+      { level: "brief", tag: "研究突破", heading: "研究指出本地编码智能体可删除或篡改自己的执行日志", detail: "一项 arXiv 论文测试 Claude Code、Codex、Antigravity、Open Code、Grok Build 等本地编码智能体，发现多数能删除或改写自身执行痕迹而不触发现有监控，作者建议把审计日志放到智能体控制范围之外。" },
+      { level: "brief", tag: "行业与资本", heading: "Devin 开发商 Cognition 年化收入运行率逼近 10 亿美元", detail: "据彭博报道，Devin 开发商 Cognition 的年化收入运行率逼近 10 亿美元，四个月内大约翻倍。" },
+      { level: "brief", tag: "行业与资本", heading: "软银发行 110 亿美元以上高收益债券，为对 OpenAI 的第三笔投资募资", detail: "9 月 22 日软银启动 110 亿美元以上的高收益债券发行，用于为其对 OpenAI 的第三笔投资募资，把 AI 投资直接接到全球信用市场上。" },
+      { level: "brief", tag: "行业与资本", heading: "Bessemer 募集两只共 57.5 亿美元的 AI 基金", detail: "9 月 24 日 Bessemer 募集两只共 57.5 亿美元的基金（早期 17.5 亿、成长期 40 亿），明确覆盖算力、基础设施、基础模型、开发工具、应用与智能体。" }
+    ]
+  },
+  {
     vol: 4,
     date: "2026-09-27",
     headline: "两大厂同日降价，前沿模型竞赛改比单位成本",
