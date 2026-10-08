@@ -121,6 +121,12 @@ const games = [
     status: "available"
   },
   {
+    name: "专注小屋",
+    screenshot: "🪟",
+    gameUrl: "games/focus/index.html",
+    status: "available"
+  },
+  {
     name: "像素冒险",
     screenshot: "🎮",
     gameUrl: "#",

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f1e8">
+  <meta name="description" content="在 ZOONN 之城留五分钟给自己。记忆与注意小游戏、本地训练记录和每日小礼物。">
+  <title>专注小屋 · ZOONN 之城</title>
+  <link rel="stylesheet" href="focus.css?v=2">
+</head>
+<body>
+  <div class="city-backdrop" aria-hidden="true"></div>
+  <aside class="desktop-note left-note" aria-hidden="true">
+    <span class="eyebrow">A LITTLE ROOM IN ZOONN'S CITY</span>
+    <h1>留五分钟，<br>给自己。</h1>
+    <p>记住一盏灯，找到一颗星。<br>每一小步，都值得被看见。</p>
+    <div class="note-rule"></div><span class="note-foot">专注小屋 / FOCUS NOOK</span>
+  </aside>
+  <main class="phone" id="phone">
+    <header class="app-header">
+      <a class="city-link" href="../../index.html" aria-label="返回 ZOONN 之城">← 城市</a>
+      <span class="wordmark">专注小屋<span class="brand-dot"></span></span>
+      <button class="icon-button" id="helpButton" aria-label="存档说明">ⓘ</button>
+    </header>
+    <div id="storageBanner" class="storage-banner" role="status" hidden></div>
+    <div id="view" class="view"></div>
+    <nav class="bottom-nav" id="nav" aria-label="游戏导航">
+      <button data-page="home" aria-current="page"><span aria-hidden="true">⌂</span>训练</button>
+      <button data-page="report"><span aria-hidden="true">▥</span>记录</button>
+      <button data-page="collection"><span aria-hidden="true">✧</span>收藏</button>
+    </nav>
+  </main>
+  <aside class="desktop-note right-note" aria-hidden="true"><span class="tiny-label">TODAY'S REMINDER</span><p>不赶路，<br>也在向前。</p><span class="round-stamp">慢慢来<br>YOU GOT THIS</span></aside>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <dialog id="dialog" class="dialog"><div id="dialogBody"></div></dialog>
+  <input id="importFile" type="file" accept="application/json,.json" hidden>
+  <noscript>请开启 JavaScript 以进行训练。游戏记录仅保存在当前浏览器。</noscript>
+  <script src="core.js?v=2"></script>
+  <script src="app.js?v=2" defer></script>
+</body>
+</html>
