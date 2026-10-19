@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#eeede7">
+  <meta name="description" content="BECOMING — ZOONN 的个人创作与动效展。一个想法，逐渐成为我的世界。">
+  <title>BECOMING — ZOONN × AI</title>
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/clash-display-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="style.css?v=3">
+  <script defer src="sculpture.js?v=3"></script><script defer src="app.js?v=3"></script>
+</head>
+<body>
+  <a href="#work" class="skip" data-en="Skip to selected work">跳至作品</a>
+  <header class="header">
+    <a class="brand" href="#top" aria-label="ZOONN — Back to top">z<span class="brand-orbit">oo</span>nn<span class="brand-star">✳</span></a>
+    <span class="header-note">INDEPENDENT MIND.<br>EXPANDING POSSIBILITIES.</span>
+    <nav aria-label="Main navigation"><a href="#story">Story<span>01</span></a><a href="#work">Work<span>02</span></a><a href="#lab">Play<span>03</span></a><a href="#about">About<span>04</span></a></nav>
+    <div class="header-tools"><button id="language" aria-label="Switch to English">EN</button><button id="motion" aria-label="暂停动效" aria-pressed="false"><span class="motion-icon" aria-hidden="true">Ⅱ</span></button></div>
+  </header>
+  <main>
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-meta"><span><i class="blue-dot"></i> HUMAN CURIOSITY × ARTIFICIAL INTELLIGENCE</span><span>AN ONGOING EXPERIMENT / 2026</span></div>
+      <h1 id="hero-title"><span class="hero-word">THOUGHT</span><span class="hero-word second">INTO FORM<span class="blue-period">.</span></span></h1>
+      <div class="hero-art"><div class="sculpture-fallback" aria-hidden="true"></div><canvas id="hero-canvas" aria-label="一座持续变化的银色数字雕塑"></canvas></div>
+      <div class="object-label" aria-hidden="true"><span class="cross">+</span><span>FIG. 001<br>A THOUGHT, TAKING SHAPE</span></div>
+      <div class="hero-bottom"><p data-en="I make things with AI.<br>And discover what I can become.">我把想法说出来，<br>再让它一点点成形。</p><a class="round-link" href="#story"><span data-en="Enter the story">往下，是我的故事</span><i aria-hidden="true">↓</i></a><span class="edition">SCROLL TO EXPLORE<br>WITH CURIOSITY, BY ZOONN</span></div>
+    </section>
+
+    <section class="story" id="story" aria-labelledby="story-title">
+      <div class="story-sticky">
+        <div class="section-meta"><span>01 / THE CONVERSATION</span><span class="story-indicator">HUMAN ↔ MACHINE</span></div>
+        <div class="story-art"><div class="sculpture-fallback dark" aria-hidden="true"></div><canvas id="story-canvas" aria-label="由环形展开为交织形体的数字雕塑"></canvas></div>
+        <div class="story-copy"><span class="overline" data-en="It started with a question.">最开始，我只是问了一个问题。</span><h2 id="story-title">WHAT<br><span class="serif">if?</span></h2><p class="story-paragraph" id="story-paragraph" data-en="An answer became a conversation.<br>A conversation became a possibility.<br>Then I wanted to make it real.">一次回答，变成来回对话。<br>来回对话，让想法有了轮廓。<br>然后，我想亲手把它做出来。</p></div>
+        <div class="dialogue-line" aria-hidden="true"><span>HUMAN</span><i></i><b id="dialogue-word">a question</b><i></i><span>AI</span></div>
+        <div class="story-bottom"><p data-en="I bring the intent.<br>Together, we explore the possibilities.">我带来问题与判断，<br>在来回尝试中，找到实现的方式。</p><div class="story-track"><span>QUESTION</span><div><i id="story-progress"></i></div><span>CREATION</span></div></div>
+      </div>
+    </section>
+
+    <section class="work" id="work" aria-labelledby="work-title">
+      <div class="section-meta"><span>02 / SELECTED EXPLORATIONS</span><span data-en="From curiosity to something you can use.">让好奇心，有迹可循。</span></div>
+      <div class="work-heading"><h2 id="work-title">LESS WHAT IF.<br>MORE <span class="serif">what's next.</span></h2><p data-en="Small ideas. Real experiments.<br>A few things I am making with AI.">一些小想法，一些真实的尝试。<br>这是我和 AI 一起做的东西。</p></div>
+      <article class="project city-project">
+        <a href="../../index.html" class="project-image city-image" aria-label="进入 ZOONN 之城"><img src="assets/city.webp" alt="ZOONN 之城的像素城市，包含咖啡馆、游戏厅和个人展板" width="1600" height="1067" loading="lazy"><span class="image-topline">A PLACE FOR EVERYTHING I MAKE</span><span class="project-badge">EXPLORE THE CITY ↗</span><span class="image-bottomline">EST. 2026 <i>ZOONN'S CITY</i> PERSONAL WORLD / 001</span></a>
+        <div class="project-caption"><span class="project-number">01</span><div><h3>ZOONN'S CITY</h3><p data-en="A pixel city for my writing, projects and small experiments.">把文章、作品与小游戏，安放在一座像素城市里。</p></div><a href="../../index.html" aria-label="进入 ZOONN 之城">↗</a></div>
+      </article>
+      <div class="project-pair">
+        <article class="project piano-project">
+          <div class="project-image piano-image"><div class="mini-meta"><span>PIANO STEPS</span><span data-en="LEARNING PROTOTYPE">学习原型</span></div><div class="piano-title">Find your<br><span class="serif">own rhythm.</span></div><div class="piano-note" id="note-display">♪</div><div class="keyboard" role="group" aria-label="迷你琴键演示"><button data-note="261.63" aria-label="C / Do"><span>C</span></button><button data-note="293.66" aria-label="D / Re"><span>D</span></button><button data-note="329.63" aria-label="E / Mi"><span>E</span></button><button data-note="349.23" aria-label="F / Fa"><span>F</span></button><button data-note="392.00" aria-label="G / Sol"><span>G</span></button><button data-note="440.00" aria-label="A / La"><span>A</span></button><button data-note="493.88" aria-label="B / Si"><span>B</span></button><i class="black-key k1"></i><i class="black-key k2"></i><i class="black-key k3"></i><i class="black-key k4"></i><i class="black-key k5"></i></div><div class="demo-caption" data-en="TOUCH A KEY · A PLAYFUL TRIBUTE TO THE PROJECT">轻触琴键 · 项目交互演绎</div></div>
+          <div class="project-caption"><span class="project-number">02</span><div><h3>PIANO STEPS</h3><p data-en="A piano learning prototype, from lessons to practice and reflection.">琴步电子琴：连接课程、接琴练习与练习回顾。</p></div><button class="details-button" data-project="piano" aria-label="了解琴步电子琴">↗</button></div>
+        </article>
+        <article class="project focus-project">
+          <div class="project-image focus-image"><div class="mini-meta"><span>FOCUS NOOK</span><span>ONE SMALL STEP</span></div><div class="focus-title">A little<br>more <span class="serif">present.</span></div><div class="focus-grid" aria-label="专注小屋灯窗图案"><span></span><span class="lit"></span><span></span><span class="lit"></span><span></span><span class="lit"></span><span></span><span class="lit"></span><span></span></div><a class="focus-try" href="../../games/focus/index.html"><span data-en="Give yourself five minutes">留五分钟给自己</span><span>↗</span></a></div>
+          <div class="project-caption"><span class="project-number">03</span><div><h3>FOCUS NOOK</h3><p data-en="Three attention and memory games, with a record of your own progress.">三种专注与记忆小游戏，记录自己的每一步进步。</p></div><a href="../../games/focus/index.html" aria-label="进入专注小屋">↗</a></div>
+        </article>
+      </div>
+      <div class="in-progress"><span class="blue-dot"></span><span>ON MY DESK</span><p data-en="Dify workflows for everyday trade operations.">Dify 商贸工作流：探索信息整理与日常业务流程。</p><span class="status-pill" data-en="IN PROGRESS">探索中</span></div>
+    </section>
+
+    <section class="lab" id="lab" aria-labelledby="lab-title">
+      <div class="section-meta"><span>03 / THE PLAYGROUND</span><span data-en="Some things make more sense when you touch them.">有些想法，动手才懂。</span></div>
+      <div class="lab-heading"><h2 id="lab-title">STAY<br><span class="serif">curious.</span></h2><p data-en="The sculpture is yours now.<br>Change its form. Move it. Find something unexpected.">现在，雕塑交给你。<br>改变形态、转动视角，发现意料之外。</p></div>
+      <div class="playground"><div class="lab-art" tabindex="0" role="group" aria-label="互动雕塑，拖动或按方向键旋转"><div class="sculpture-fallback dark" aria-hidden="true"></div><canvas id="lab-canvas" aria-hidden="true"></canvas><span class="art-index" id="art-index">OBJECT / 01</span><span class="drag-hint" data-en="DRAG TO EXPLORE · ARROW KEYS ALSO WORK">拖动探索 · 也可使用方向键</span><button id="reset" class="reset" aria-label="重置雕塑视角">↺</button></div><div class="lab-panel"><div class="lab-tabs" role="group" aria-label="雕塑形态"><button data-form="0" aria-pressed="true"><span>01</span> ORBIT <i>↗</i></button><button data-form="1" aria-pressed="false"><span>02</span> ENTANGLE <i>↗</i></button><button data-form="2" aria-pressed="false"><span>03</span> BLOOM <i>↗</i></button></div><div class="lab-range"><label for="energy"><span data-en="MOTION">动态强度</span><output id="energy-value">50%</output></label><input id="energy" type="range" min="0" max="100" value="50"></div><div class="material-select" role="group" aria-label="雕塑材质"><button data-material="0" aria-pressed="true"><i class="chrome-swatch"></i> CHROME</button><button data-material="1" aria-pressed="false"><i class="blue-swatch"></i> COBALT</button></div><p class="lab-footnote" data-en="A form in motion.<br>No two moments are quite the same.">形态一直在变化。<br>没有两个瞬间完全相同。</p></div></div>
+      <p id="lab-status" class="sr-only" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="about" id="about" aria-labelledby="about-title">
+      <div class="section-meta"><span>04 / THE HUMAN BEHIND IT</span><span>STILL LEARNING. STILL MAKING.</span></div>
+      <div class="about-grid"><div class="portrait-wrap"><img src="assets/portrait.jpg" alt="支宁宁的生活照" width="450" height="600" loading="lazy"><span class="portrait-caption">ZHININGNING / ZOONN</span><span class="portrait-cross" aria-hidden="true">+</span></div><div class="about-copy"><p class="overline" data-en="A person. Not a prompt.">每个想法背后，都有一个具体的人。</p><h2 id="about-title">ALWAYS<br><span class="serif">becoming.</span></h2><p class="intro" data-en="I'm Zhiningning. You can call me ZOONN.<br>A social work graduate, with experience in international trade and life abroad.">我是支宁宁，你也可以叫我 ZOONN。<br>社会工作专业毕业，有外贸工作与海外生活经历。</p><p class="about-text" data-en="AI has expanded what I can try. I bring my curiosity, my experience, and the choice of what matters. The tools keep changing. The desire to make things stays.">AI 让我能动手尝试更多事情。<br>我带来好奇心、生活经验，以及对“什么值得做”的判断。<br>工具一直在变，想做点什么的心情没有变。</p><a class="text-link" href="https://github.com/zoonn-zero" target="_blank" rel="noopener noreferrer">FIND ME ON GITHUB <span>↗</span></a></div></div>
+      <div class="contact"><span data-en="HAVE A THOUGHT?">你也有个想法？</span><a href="mailto:1245432618@qq.com">LET'S <span class="serif">talk.</span><i>↗</i></a><div class="contact-bottom"><a href="mailto:1245432618@qq.com">1245432618@qq.com</a><button id="wechat" data-en="Copy WeChat ID ↗">复制微信号 ↗</button></div><p id="contact-status" role="status" aria-live="polite"></p></div>
+      <footer><a class="brand" href="#top">zoonn<span class="brand-star">✳</span></a><span>HUMAN INTENT. MACHINE POSSIBILITY.</span><a href="../../index.html" data-en="BACK TO MY CITY ↗">回到 ZOONN 之城 ↗</a><span>© 2026 ZOONN</span></footer>
+    </section>
+  </main>
+  <dialog id="project-dialog"><button class="dialog-close" aria-label="关闭详情">×</button><span class="overline">PIANO STEPS / LEARNING PROTOTYPE</span><h2 data-en="Practice, with a little direction.">让练习，有一点方向。</h2><p data-en="Piano Steps is a desktop learning prototype that brings together lessons, MIDI keyboard practice and practice review. It is still being refined and is not yet available as a public download.">琴步电子琴是一个桌面学习原型，将课程学习、MIDI 接琴练习和练习回顾结合起来。目前仍在完善，暂未提供公开下载。</p><p class="dialog-small" data-en="The seven keys on this page are a small interactive tribute, not the full application.">本页七个琴键是围绕项目制作的互动演绎，并非完整软件界面。</p><button class="dialog-done" data-en="Back to exploring">继续探索 ↗</button></dialog>
+  <noscript><p class="noscript">故事与作品可以直接阅读。启用 JavaScript 后可体验动态雕塑与互动琴键。</p></noscript>
+</body>
+</html>

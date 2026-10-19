@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initWeekly();
   initMapMarkers();
   initGalleryBoard();
+  initContactInfo();
   initCat();
   initMessageForm();
 });
@@ -389,37 +390,67 @@ function openWeeklyIssue(vol) {
   openModal('weekly');
 }
 
-// ===== 个人展板 - 渲染手账画布 =====
+// ===== 个人展板与信息亭 =====
+function boardText(value) {
+  return String(value || '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[char]);
+}
+
 function initGalleryBoard() {
   const board = document.getElementById('galleryBoard');
-  if (!board || typeof galleryItems === 'undefined') return;
+  if (!board || typeof personalBoard === 'undefined') return;
+  board.innerHTML = `
+    <div class="board-intro">
+      <figure class="board-portrait">
+        <img src="${boardText(personalBoard.photo)}" alt="支宁宁的生活照" width="3000" height="4000" loading="lazy">
+        <figcaption>${boardText(personalBoard.alias)}</figcaption>
+      </figure>
+      <div class="board-about">
+        <p class="board-eyebrow">me + AI = new me</p>
+        <h3>${boardText(personalBoard.name)} <span>· ${boardText(personalBoard.alias)}</span></h3>
+        <p class="board-bio">${boardText(personalBoard.bio)}</p>
+        <button type="button" class="board-contact-link" id="boardContactLink">联系方式见信息亭 <span aria-hidden="true">→</span></button>
+      </div>
+    </div>
+    <section class="board-projects" aria-labelledby="boardProjectsTitle">
+      <h3 id="boardProjectsTitle">做过的项目</h3>
+      <ul class="board-project-list">${personalBoard.projects.map(project => `
+        <li>
+          <div class="board-project-heading">
+            ${project.url ? `<a href="${boardText(project.url)}"${project.url.startsWith('https://') ? ' target="_blank" rel="noopener noreferrer"' : ''}>${boardText(project.name)} <span aria-hidden="true">↗</span></a>` : `<span class="board-project-name">${boardText(project.name)}</span>`}
+            ${project.status ? `<span class="board-project-status">${boardText(project.status)}</span>` : ''}
+          </div>
+          <p>${boardText(project.description)}</p>
+        </li>`).join('')}
+      </ul>
+    </section>`;
+  document.getElementById('boardContactLink').addEventListener('click', function () {
+    closeModal('gallery');
+    openModal('info');
+    document.querySelector('#modal-info .modal-close').focus();
+  });
+}
 
-  board.innerHTML = galleryItems.map(item => {
-    const style = `left:${item.x}%; top:${item.y}%; transform:rotate(${item.rotate || 0}deg);`;
-
-    if (item.type === 'photo') {
-      return `
-        <div class="board-item board-photo" style="${style}">
-          <img src="${item.image}" alt="${item.caption || '展品'}">
-          ${item.caption ? `<div class="board-caption">${item.caption}</div>` : ''}
-        </div>`;
-    }
-
-    if (item.type === 'note') {
-      return `
-        <div class="board-item board-note" style="${style}">
-          ${item.title ? `<div class="board-note-title">${item.title}</div>` : ''}
-          <div class="board-note-text">${item.text || ''}</div>
-        </div>`;
-    }
-
-    if (item.type === 'sticker') {
-      return `
-        <div class="board-item board-sticker" style="${style}">${item.emoji || '✨'}</div>`;
-    }
-
-    return '';
-  }).join('');
+function initContactInfo() {
+  const list = document.getElementById('contactInfoList');
+  if (!list || typeof contactInfo === 'undefined') return;
+  const rows = [
+    { icon: '💬', label: '微信', value: contactInfo.wechat },
+    { icon: '📧', label: '邮箱', value: contactInfo.email, url: 'mailto:' + contactInfo.email },
+    { icon: '💻', label: 'GitHub', value: contactInfo.github.replace(/^https:\/\//, ''), url: contactInfo.github }
+  ];
+  if (contactInfo.showXiaohongshu && contactInfo.xiaohongshu) rows.push({ icon: '📕', label: '小红书', value: contactInfo.xiaohongshu });
+  if (contactInfo.showBilibili && contactInfo.bilibili) rows.push({ icon: '📺', label: 'B站', value: contactInfo.bilibili });
+  rows.push({ icon: '🍜', label: '约饭', value: '看看哪天能凑一桌 →', url: 'https://meal-date.app.workbuddy.host/' });
+  list.innerHTML = rows.map(row => `
+    <div class="contact-item">
+      <span class="contact-icon" aria-hidden="true">${row.icon}</span>
+      <div class="contact-detail">
+        <span class="contact-label">${row.label}</span>
+        ${row.url ? `<a href="${boardText(row.url)}" class="contact-value"${row.url.startsWith('https://') ? ' target="_blank" rel="noopener noreferrer"' : ''}>${boardText(row.value)}</a>` : `<span class="contact-value contact-value-text">${boardText(row.value)}</span>`}
+      </div>
+    </div>`).join('');
 }
 
 // ===== 公园 - 渲染地图标记 =====

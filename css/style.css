@@ -557,97 +557,46 @@ body {
   letter-spacing: 2px;
 }
 
-/* ===== 个人展板 - 手账画布 ===== */
-.gallery-board-style {
-  max-width: 900px;
-}
-
+/* ===== 个人展板 - 简介与项目 ===== */
+.gallery-board-style { max-width: 780px; }
 .gallery-board {
-  position: relative;
-  min-height: 500px;
-  margin-top: 15px;
-  border: 1px dashed #c9c4b4;
+  margin-top: 20px;
+  padding: 24px;
+  background: #fdfcf7;
+  border: 1px solid #ddd6c7;
   border-radius: 8px;
-  background-color: #fdfcf7;
-  background-image:
-    linear-gradient(#e8e4d8 1px, transparent 1px),
-    linear-gradient(90deg, #e8e4d8 1px, transparent 1px);
-  background-size: 24px 24px;
-  overflow: hidden;
+  color: #453e34;
 }
-
-.board-item {
-  position: absolute;
-  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* 照片展品：白边相纸 + 顶部胶带 */
-.board-photo {
-  width: 180px;
-  background: #fff;
-  padding: 8px 8px 6px;
-}
-
-.board-photo img {
-  width: 100%;
-  display: block;
-  border: 1px solid #eee;
-  background: #f5f5f5;
-}
-
-.board-photo::before {
-  content: "";
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  width: 64px;
-  height: 20px;
-  background: rgba(255, 232, 130, 0.75);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  transform: translateX(-50%) rotate(-3deg);
-}
-
-.board-caption {
-  font-family: "Comic Sans MS", "KaiTi", "楷体", cursive;
-  font-size: 0.82rem;
-  color: #777;
-  text-align: center;
-  padding-top: 6px;
-}
-
-/* 便签展品：黄色便利贴 */
-.board-note {
-  width: 200px;
-  padding: 14px 16px;
-  background: #fff9a8;
-  color: #5a4a1f;
-  font-family: "Comic Sans MS", "KaiTi", "楷体", cursive;
-}
-
-.board-note-title {
-  font-weight: bold;
-  font-size: 1rem;
-  margin-bottom: 6px;
-}
-
-.board-note-text {
-  font-size: 0.9rem;
-  line-height: 1.6;
-}
-
-/* emoji 贴纸 */
-.board-sticker {
-  font-size: 2.6rem;
-  line-height: 1;
-  box-shadow: none;
-  filter: drop-shadow(2px 3px 3px rgba(0, 0, 0, 0.2));
-}
-
-/* 手机端：展品缩小一点，避免挤在一起 */
+.board-intro { display: grid; grid-template-columns: 144px minmax(0, 1fr); gap: 28px; align-items: center; }
+.board-portrait { margin: 0; padding: 7px 7px 0; background: #fff; box-shadow: 1px 3px 10px #40301d1a; transform: rotate(-2deg); }
+.board-portrait img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; object-position: center; }
+.board-portrait figcaption { padding: 8px 0; text-align: center; color: #7b715f; font-size: 12px; letter-spacing: 2px; }
+.board-eyebrow { margin: 0 0 8px; color: #7b715f; font-size: 12px; }
+.board-about h3 { margin: 0 0 12px; font-size: 24px; color: #3d382f; }
+.board-about h3 span { font-size: 14px; font-weight: normal; color: #756b5e; white-space: nowrap; }
+.board-bio { margin: 0; font-size: 14px; line-height: 1.9; }
+.board-contact-link { display: inline-flex; align-items: center; gap: 12px; margin-top: 10px; min-height: 44px; padding: 0; border: 0; background: transparent; font: inherit; font-size: 14px; color: #805029; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.board-contact-link:focus-visible, .board-project-heading a:focus-visible { outline: 2px solid #805029; outline-offset: 4px; border-radius: 2px; }
+.board-projects { margin-top: 28px; border-top: 1px solid #e5dfd1; padding-top: 20px; }
+.board-projects > h3 { margin: 0 0 6px; font-size: 15px; color: #756b5e; font-weight: normal; }
+.board-project-list { list-style: none; padding: 0; margin: 0; }
+.board-project-list li { padding: 14px 0; border-bottom: 1px solid #ece7dd; }
+.board-project-list li:last-child { border-bottom: 0; padding-bottom: 0; }
+.board-project-heading { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.board-project-heading a, .board-project-name { font-size: 15px; font-weight: bold; color: #453e34; text-decoration: none; }
+.board-project-heading a:hover { color: #805029; text-decoration: underline; }
+.board-project-heading a > span { color: #9b8b74; font-weight: normal; }
+.board-project-status { font-size: 11px; color: #786544; background: #f2eddf; padding: 3px 7px; border-radius: 4px; }
+.board-project-list p { margin: 5px 0 0; font-size: 14px; line-height: 1.75; color: #6f665b; }
+.contact-detail { min-width: 0; }
+.contact-value { overflow-wrap: anywhere; }
+.contact-value-text { user-select: text; cursor: text; }
 @media (max-width: 600px) {
-  .board-photo { width: 130px; }
-  .board-note { width: 150px; }
-  .board-sticker { font-size: 1.8rem; }
+  .gallery-board { padding: 18px; margin-top: 16px; }
+  .board-intro { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .board-portrait { width: 132px; justify-self: center; }
+  .board-about h3 { font-size: 22px; }
+  .board-projects { margin-top: 20px; }
 }
 
 /* ===== 游戏厅 - 霓虹风格 ===== */

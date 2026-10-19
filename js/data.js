@@ -103,10 +103,10 @@ const projects = [
     url: "https://work.zoonn.org"
   },
   {
-    name: "网页动效开发",
-    description: "做会动起来的网页：滚动叙事、物理模拟、能拖能拽的真交互。样张已进作品集。",
-    icon: "🎬",
-    url: "https://work.zoonn.org/sites/two-of-us/"
+    name: "BECOMING · 人与 AI",
+    description: "从念头到作品：实时数字雕塑、滚动叙事与可亲手体验的创作展。",
+    icon: "✦",
+    url: "stories/co-create/index.html"
   }
 ];
 
@@ -115,15 +115,15 @@ const projects = [
 // status: "developing" 开发中 / "available" 可玩
 const games = [
   {
-    name: "俄罗斯方块",
-    screenshot: "🧱",
-    gameUrl: "games/tetris.html",
-    status: "available"
-  },
-  {
     name: "专注小屋",
     screenshot: "🪟",
     gameUrl: "games/focus/index.html",
+    status: "available"
+  },
+  {
+    name: "俄罗斯方块",
+    screenshot: "🧱",
+    gameUrl: "games/tetris.html",
     status: "available"
   },
   {
@@ -367,12 +367,15 @@ const visitedPlaces = [
 ];
 
 // ===== 6. 信息亭 - 联系方式 =====
-// 直接修改 HTML 中的联系方式，或者在这里配置（可选）
+// showXiaohongshu / showBilibili 为 false 时不展示对应入口。
 const contactInfo = {
-  email: "your-email@example.com",
-  xiaohongshu: "@zoonn",
-  github: "github.com/zoonn",
-  bilibili: "@zoonn的城市"
+  wechat: "zningnin123456789",
+  email: "1245432618@qq.com",
+  github: "https://github.com/zoonn-zero",
+  xiaohongshu: "94931789891",
+  showXiaohongshu: false,
+  bilibili: "",
+  showBilibili: false
 };
 
 // ===== 7. 小猫对话气泡内容（随机） =====
@@ -388,66 +391,17 @@ const catMessages = [
   "肚子饿了喵~"
 ];
 
-// ===== 8. 个人展板 - 手账画布展品 =====
-// type（展品种类）：
-//   "photo"    = 照片（游戏截图、有趣的图都放这里）
-//   "note"     = 文字便签
-//   "sticker"  = emoji 贴纸
-//
-// image 支持两种写法：
-//   1. 本地图片：把图片放进 images 文件夹，写 "images/文件名.png"
-//   2. 网络图片：直接粘贴完整网址 "https://example.com/pic.jpg"
-//
-// x / y    = 在画布上的位置（百分比 0~100，左上角是 0,0）
-// rotate   = 倾斜角度（随手贴的感觉，0 就是正的）
-// caption  = 照片下方的手写小字（可省略）
-const galleryItems = [
-  {
-    type: "photo",
-    image: "images/avatar-placeholder.svg",
-    caption: "zoonn 本尊",
-    x: 5, y: 8, rotate: -3
-  },
-  {
-    type: "note",
-    title: "关于我",
-    text: "AI 时代新人类<br>正在用 AI 重塑自己的工作和生活",
-    x: 40, y: 5, rotate: 2
-  },
-  {
-    type: "note",
-    title: "me + AI = new me",
-    text: "这座城市的建造宣言",
-    x: 70, y: 10, rotate: -2
-  },
-
-  // ↓↓↓ 空展位：想放游戏截图/有趣的图时，把 image 换成你的图片即可 ↓↓↓
-  {
-    type: "photo",
-    image: "images/cat-frame1.svg",
-    caption: "展位一（换成你的图）",
-    x: 5, y: 58, rotate: 4
-  },
-  {
-    type: "photo",
-    image: "images/cat-frame2.svg",
-    caption: "展位二（换成你的图）",
-    x: 36, y: 55, rotate: -5
-  },
-  // ↑↑↑ 空展位 ↑↑↑
-
-  {
-    type: "sticker",
-    emoji: "🎮",
-    x: 66, y: 62, rotate: -8
-  },
-  {
-    type: "sticker",
-    emoji: "🐱",
-    x: 85, y: 78, rotate: 6
-  }
-];
-
-// 想加新展品：复制上面任意一个 { } 块，粘贴到数组末尾（最后一个 } 后面的逗号别丢），改内容即可
-// 想删展品：把对应的 { } 整块删掉
-// 展品太多也没关系，画布会自动变高
+// ===== 8. 个人展板 - 简介与项目 =====
+const personalBoard = {
+  name: "支宁宁",
+  alias: "ZOONN",
+  photo: "images/zoonn-portrait.jpg",
+  bio: "山东大学社会工作专业毕业，有外贸工作与海外生活经历。现在尝试用 AI，把工作和生活中的想法做成可以使用的网站、软件和工作流。",
+  projects: [
+    { name: "ZOONN 之城", description: "用像素城市串起文章、作品、周刊和小游戏的个人网站。", url: "index.html" },
+    { name: "个人网站与网页动效", description: "借助 AI 制作个人展示网站，尝试滚动叙事和交互效果。", url: "https://work.zoonn.org" },
+    { name: "专注小屋", description: "包含三种专注与记忆小游戏，支持本地存档和个人训练记录回顾。", url: "games/focus/index.html" },
+    { name: "琴步电子琴", status: "学习原型", description: "将课程学习、接琴练习和练习回顾结合起来的电子琴学习软件原型。" },
+    { name: "Dify 商贸工作流", status: "开发中", description: "正在探索用 Dify 串联商贸业务中的信息整理与日常处理流程。" }
+  ]
+};

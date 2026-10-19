@@ -4,7 +4,7 @@
   <meta charset="UTF-8" data-page-node-id="rE4QaSmSvDtMST7Auu1Xvd">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="TuHffenUcVLoeajuGwA0my">
   <title>ZOONN 之城 - Zoonn's City</title>
-  <link rel="stylesheet" href="css/style.css?v=c086ef8d" data-page-node-id="7Am3Bf6ky5BV7Ctt5zmAZE">
+  <link rel="stylesheet" href="css/style.css?v=24f1a185" data-page-node-id="7Am3Bf6ky5BV7Ctt5zmAZE">
   <link rel="stylesheet" href="css/chat.css?v=33dc4ddd">
 </head>
 <body data-page-node-id="q3To0M7ZT4WkGjdm2seeuQ">
@@ -91,9 +91,9 @@
     <div class="modal-content gallery-style gallery-board-style" data-page-node-id="t4WFZWmgeP0VI8bybbwoAb">
       <button class="modal-close" data-close="gallery" data-page-node-id="tKAkMngQU9jzvwdCSmizPx">&times;</button>
       <h2 class="modal-title" data-page-node-id="o3rtFwU5wdP4Dt6C8iW5RF">🎨 个人展板</h2>
-      <p class="modal-subtitle" data-page-node-id="gJRWYIAujtDJX9bTEtayX0">随手贴的一块手账板</p>
+      <p class="modal-subtitle" data-page-node-id="gJRWYIAujtDJX9bTEtayX0">关于我，以及做过的项目</p>
       <div class="gallery-board" id="galleryBoard" data-page-node-id="TFZEgxq6qfU3rZpTKqarrw">
-        <!-- 展品由 JS 根据 data.js 的 galleryItems 数组生成 -->
+        <!-- 简介与项目由 data.js 的 personalBoard 配置生成 -->
       </div>
     </div>
   </div>
@@ -149,42 +149,8 @@
       <button class="modal-close" data-close="info" data-page-node-id="TIsc2TCSAzadvX7Ehthfq8">&times;</button>
       <h2 class="modal-title" data-page-node-id="E94tdUVuucX3rxIRAz5dQK">📮 信息亭</h2>
       <p class="modal-subtitle" data-page-node-id="VVOlqzsWeFHRlH7wNOl1uC">联系我</p>
-      <div class="contact-info" data-page-node-id="jlWq8mnn3oWoiER2wpyO5r">
-        <div class="contact-item" data-page-node-id="lpkkfoGYf7ZydLdsL21652">
-          <span class="contact-icon" data-page-node-id="Ttr00TQ5eCwrdjr73rcWv7">📧</span>
-          <div class="contact-detail" data-page-node-id="ukqHQXQFKOL1BLAL42y1Cv">
-            <span class="contact-label" data-page-node-id="UdnamvIncqCtYnuF8gbLRb">邮箱</span>
-            <a href="mailto:your-email@example.com" class="contact-value" data-page-node-id="GzWIFvsq13PB4Xie2Y1Ws5">your-email@example.com</a>
-          </div>
-        </div>
-        <div class="contact-item" data-page-node-id="026g4WDGOGUUQd0oIRW3x9">
-          <span class="contact-icon" data-page-node-id="1ypHozZa8bgHXTVIoaCtrj">📕</span>
-          <div class="contact-detail" data-page-node-id="v5IaD42HCrvXmkhUbsYDxS">
-            <span class="contact-label" data-page-node-id="VSYZkSBoEfDwzkRmo0MT2c">小红书</span>
-            <a href="#" class="contact-value" data-page-node-id="ZX09YI2DsQSkko0emx8msF">@zoonn</a>
-          </div>
-        </div>
-        <div class="contact-item" data-page-node-id="vqXzrbnUkdBjE2PFoBWSaJ">
-          <span class="contact-icon" data-page-node-id="gTVS3GxZa6znABdsvPMQl3">💻</span>
-          <div class="contact-detail" data-page-node-id="iXj9mhbaAqMx9e25mdk2tU">
-            <span class="contact-label" data-page-node-id="u61WJV0QuJ3oekFP2BWevT">GitHub</span>
-            <a href="#" class="contact-value" data-page-node-id="YvPKwNTfwIRAJ6GQ7LGvsL">github.com/zoonn</a>
-          </div>
-        </div>
-        <div class="contact-item" data-page-node-id="RRvsK5fFKO03SWnlpwRxhs">
-          <span class="contact-icon" data-page-node-id="6GwQJcTREAKtQmfTbLut6Y">📺</span>
-          <div class="contact-detail" data-page-node-id="OThC8gEJJz2CYkvWKUcJyY">
-            <span class="contact-label" data-page-node-id="HW6pvc5NxChg6AGMXauwR5">B站</span>
-            <a href="#" class="contact-value" data-page-node-id="txOQmqVT7TqvinPdb0BGuI">@zoonn的城市</a>
-          </div>
-        </div>
-        <div class="contact-item">
-          <span class="contact-icon">🍜</span>
-          <div class="contact-detail">
-            <span class="contact-label">约饭</span>
-            <a href="https://meal-date.app.workbuddy.host/" target="_blank" rel="noopener noreferrer" class="contact-value">看看哪天能凑一桌 →</a>
-          </div>
-        </div>
+      <div class="contact-info" id="contactInfoList">
+        <!-- 联系方式由 data.js 的 contactInfo 配置生成 -->
       </div>
       <div class="message-form" data-page-node-id="i3PlphlgFaFDApeCZDiWpi">
         <h3 class="form-title" data-page-node-id="6K6KKHIFerqkGzQuZpAoRE">💬 留个言吧</h3>
@@ -242,8 +208,8 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=d32822cd"></script>
-  <script src="js/main.js?v=4c9eff75"></script>
+  <script src="js/data.js?v=8c217760"></script>
+  <script src="js/main.js?v=6462d9d5"></script>
   <script src="js/chat-config.js?v=4def8b8b"></script>
   <script src="js/chat-core.js?v=72e0977f"></script>
   <script src="js/chat-widget.js?v=8f03db12"></script>

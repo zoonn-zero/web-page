@@ -1,0 +1,18 @@
+@font-face{font-family:'Clash Display';src:url('assets/clash-display-500.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap;}
+@font-face{font-family:'Clash Display';src:url('assets/clash-display-600.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap;}
+@font-face{font-family:'Satoshi';src:url('assets/satoshi-400.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}
+@font-face{font-family:'Gambetta';src:url('assets/gambetta-400-italic.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap;}
+@font-face{
+  font-family: 'Noto Sans SC';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(assets/noto-sans-sc-0.ttf) format('truetype');
+}
+@font-face{
+  font-family: 'Noto Sans SC';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(assets/noto-sans-sc-1.ttf) format('truetype');
+}

@@ -1,0 +1,11 @@
+Fonts downloaded from their official distribution endpoints, 2026-10-17.
+Clash Display and Satoshi — Indian Type Foundry / Fontshare, ITF Free Font License.
+Gambetta — Indian Type Foundry / Fontshare. See the official Fontshare license.
+https://www.fontshare.com/licenses
+https://www.fontshare.com/fonts/clash-display
+https://www.fontshare.com/fonts/satoshi
+https://www.fontshare.com/fonts/gambetta
+Noto Sans SC — Google / Adobe, SIL Open Font License 1.1.
+https://github.com/notofonts/noto-cjk
+The Chinese webfont is a Google Fonts subset of the characters used on this page.
+Rebuild the subset or supply a complete font when adding new Chinese content.
