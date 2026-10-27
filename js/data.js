@@ -211,6 +211,30 @@ const magazines = [
 // ▲▲▲ 自动更新区 ▲▲▲
 const weeklyIssues = [
   {
+    vol: 7,
+    date: "2026-10-26",
+    headline: "资本向头部两家集中，模型能力向低价扩散",
+    summary: "DeepSeek 单轮融资 150 亿美元，Kimi 半价进入第一梯队，资本与能力同时重新定价。",
+    minutes: 6,
+    items: [
+      { level: "lead", tag: "行业与资本", heading: "DeepSeek 单轮融资约 150 亿美元，创中国 AI 行业纪录", detail: "据 Bloomberg 报道，杭州的 DeepSeek 完成约 1000 亿元人民币（约 150 亿美元）融资，宁德时代与腾讯是主要出资方。本轮目标被两度上调，从 500 亿元到 800 亿元，再到最终数字，规模在中国 AI 行业历史上居前。公司已聘请中信证券，为 2027 年初的上海 IPO 做准备。同一周内，全球其余 AI 公司的融资合计仅约 11 亿美元。", comment: "点评：一笔融资是同期其余所有交易之和的十余倍，说明钱不再按赛道均摊，而是押给少数「确定能长期烧算力」的标的。夹在中间的模型公司会最先感到寒意。", stats: [ { label: "本轮融资", value: "约 1000 亿元" }, { label: "折合美元", value: "约 150 亿" }, { label: "同期其余公司合计", value: "约 11 亿美元" } ] },
+      { level: "key", tag: "模型与产品发布", heading: "Kimi K3.1 Pro 用一半价格排到智能指数第四", detail: "月之暗面 10 月 23 日发布 Kimi K3.1 Pro，2.8 万亿总参数、1040 亿激活、100 万 token 上下文，定价 $2 / $10 每百万 token（缓存输入 $0.20），恰是 Claude Opus 5.5 的一半，缓存价格比 K3 低约三分之一。Artificial Analysis 智能指数 55.1 排第四，比 K3 高 11.5 分；Terminal-Bench 4.0 拿到 67.2%，是该榜实测最高分。开源权重承诺 11 月 4 日放出，在此之前它仍属闭源。", comment: "点评：真正的信号不是分数，而是「第四名只卖一半价钱」。当追赶到第一梯队的价格被压到这个程度，头部模型收溢价的空间就在收窄。" },
+      { level: "key", tag: "模型与产品发布", heading: "讯飞把 2930 亿参数模型开源，全程跑在国产算力上", detail: "科大讯飞 10 月 22 日在全球 1024 开发者节发布并开源星火 X2.6，采用 293B-A30B 混合专家架构、支持 100 万 token 上下文，部署在国内 1 万卡推理集群上。公司称长程任务并行训练让超长上下文训练效率提升约 4 倍，基于国产集群的存算协同推理让推理效率提升 4.5 倍；端云一体路由准确率 96.1%，端侧智能体任务覆盖度 41.9%，敏感信息默认本地脱敏后再上云。", comment: "点评：参数不是重点，293B 加 1 万卡的组合才是——它说明国产算力已经能撑起接近前沿规模的训练与长上下文推理。剩下的差距在数据和后训练，而不在卡。" },
+      { level: "key", tag: "研究突破", heading: "西湖大学等团队让模型「读一句话造一个蛋白」", detail: "西湖大学原发杰、刘建明团队联合港科大（广州）卢泓远团队、中科院深圳先进院司同团队，10 月 21 日在《自然》发表 Pinal 模型：160 亿参数，用 1.35 亿条蛋白序列构造出 17 亿组「蛋白质—文本」配对做训练。模型先由文字生成结构、再据此排布氨基酸序列，在荧光蛋白、PET 水解酶、醇脱氢酶与固碳 H 蛋白四类任务上均实验验证成功；其中 H 蛋白把多酶固碳路径的产物产量提高到天然版本的 1.7 倍，且未经过迭代优化。", comment: "点评：把「功能意图」直接当接口，等于绕开了结构参数这道人工关卡。真正门槛已从「能不能设计」移到「能不能验证」——四类任务挑的都是可测量的，这正是结论可信的原因。" },
+      { level: "key", tag: "行业与资本", heading: "OpenAI 新一轮估值被砍掉 1500 亿美元", detail: "据 CNBC 10 月 22 日报道，OpenAI 正以 1.25 万亿美元投前估值募资至多 300 亿美元，由 Coatue 与阿联酋投资者领投，投后约 1.28 万亿美元，比几周前 1.4 万亿美元的报价低约 1500 亿。公司希望 10 月 30 日前完成签约。同一周，Anthropic 据 Bloomberg 报道正与 Nscale 谈第二栋 460 兆瓦数据中心的合同，金额约 450 亿美元。", comment: "点评：估值打折和算力加码在同一周发生，说明市场不是不信 AI，而是开始区分「谁的现金流能覆盖折旧」。一家在压报价，另一家在签十年账单。" },
+      { level: "brief", tag: "模型与产品发布", heading: "OpenAI 上线 GPT-6.1 Terra：计算机操作更快，API 成本降 50%", detail: "OpenAI 推出 GPT-6.1 Terra，主打更快的计算机操作（computer use）能力，同时把 API 价格下调约 50%。" },
+      { level: "brief", tag: "模型与产品发布", heading: "Claude Duet 上线：不等指令、主动找活的代理应用", detail: "Anthropic 10 月 21 日推出 Claude Duet，面向 Pro 与 Max 用户，代理会在后台主动推进任务而不是等一句指令才动。" },
+      { level: "brief", tag: "AI 工具与效率玩法", heading: "OpenAI 用 GPT-5.6 Sol 找出 PHP 关键漏洞，涉 70% 网站", detail: "OpenAI 牵头的两个月联合行动用 GPT-5.6 Sol 发现 PHP 多处关键漏洞（PHP 支撑约 70% 的网站），在公开披露前完成修复，并向一线防御者开放 10 亿美元 Daybreak 额度。" },
+      { level: "brief", tag: "AI 工具与效率玩法", heading: "微软 MAI-DxO 诊断准确率超过医生，成本减半", detail: "微软的 MAI-DxO 在诊断准确率上超过人类医生，单次诊断成本约为后者一半。" },
+      { level: "brief", tag: "AI 工具与效率玩法", heading: "Canva 推出首个自研图像生成模型 Craft", detail: "Canva 10 月 22 日发布 Craft，这是它第一个自研的图像生成基础模型，按设计工作流调优而非通用出图。" },
+      { level: "brief", tag: "AI 工具与效率玩法", heading: "Perplexity Computer 在 Apple Silicon 上完全本地运行", detail: "Perplexity 的 Computer 功能对 Pro 用户开放完全本地运行，全部推理在 Apple Silicon Mac 上完成。" },
+      { level: "brief", tag: "研究突破", heading: "《自然·通讯》：扩散模型的「虚假状态」是生成能力的起点", detail: "10 月 25 日《自然·通讯》的论文用密集联想记忆理论解释扩散模型：训练数据超过临界容量后出现的「虚假状态」不是缺陷，而是模型开始具备生成能力的第一信号。" },
+      { level: "brief", tag: "行业与资本", heading: "Salesforce 以 56.6 亿美元收购 Braze，溢价 58%", detail: "Salesforce 将以每股 47.50 美元现金收购客户互动平台 Braze，企业价值约 56.6 亿美元，较 10 月 19 日收盘溢价 58%，约为 Braze 2027 财年营收指引的 6.2 倍。" },
+      { level: "brief", tag: "行业与资本", heading: "Tenstorrent 完成 15 亿美元 E 轮，投后 62 亿美元", detail: "Jim Keller 的 RISC-V AI 芯片公司 Tenstorrent 完成 15 亿美元 E 轮，投后估值 62 亿美元，为 2024 年的 2.4 倍，由 Trace Capital 与 Innovation X 领投。" },
+      { level: "brief", tag: "行业与资本", heading: "Anthropic 把 Agent Skills 标准捐给 Linux 基金会", detail: "Anthropic 10 月 22 日将 Agent Skills 标准捐给 Linux 基金会旗下的 Agentic AI Foundation，交由中立机构维护。" }
+    ]
+  },
+  {
     vol: 6,
     date: "2026-10-12",
     headline: "模型层集体放量降价，算力资本链开始降温",
