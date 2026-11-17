@@ -211,6 +211,30 @@ const magazines = [
 // ▲▲▲ 自动更新区 ▲▲▲
 const weeklyIssues = [
   {
+    vol: 8,
+    date: "2026-11-17",
+    headline: "Anthropic 千亿美元路演开闸，AI 估值第一次交给公开市场",
+    summary: "模型与工具在 7 天内密集落地，资本却开始分化：头部被公开市场定价，中部被折价重估。",
+    minutes: 7,
+    items: [
+      { level: "lead", tag: "行业与资本", heading: "Anthropic 启动史上最大 IPO 路演，11 月 19 日登陆纳斯达克", detail: "11 月 10 日，Anthropic 更新招股书并启动 IPO 路演：发行 8.25 亿股 A 类普通股，定价区间 70–78 美元/股，高盛与摩根士丹利牵头，22 家投行承销，计划 11 月 18 日敲定发行价、11 月 19 日以代码 ANT 在纳斯达克挂牌。招股书显示 Q3 营收 169.56 亿美元、同比增长 1127%，10 月底年化收入约 810 亿美元，比 9 月末多出 100 亿。风险因素章节同时披露：已签算力承诺约 9009 亿美元，而账上现金加短期投资约 1318 亿美元，承诺规模是流动性的 6.8 倍，且支出多为多年期固定金额、收入按量计费。谷歌与英伟达各认购 100 亿美元私募配售，AMD 认购 25 亿，博通、美光、微软各 10 亿，台积电 5 亿。", comment: "点评：9 月还传 2 万亿，11 月修到 1.4 万亿；把 9009 亿美元算力承诺交给公开市场按季对账，是这轮 AI 叙事第一次被要求兑现。", stats: [ { label: "年化收入（10 月底）", value: "810 亿美元" }, { label: "算力承诺总额", value: "9009 亿美元" }, { label: "发行价区间", value: "70–78 美元/股" } ] },
+      { level: "key", tag: "模型与产品发布", heading: "阿里发布 Qwen4-Max：2.4 万亿参数，每 token 只激活 71B", detail: "11 月 16 日，阿里巴巴发布新一代基座模型 Qwen4-Max，总参数 2.4 万亿、每 token 激活 71B（同规模下比 Qwen3.8-Max 少 25%），支持 100 万 token 上下文与原生视觉。官方数据称 Terminal-Bench 4.0 从 38.9 提升到 48.5 分，每次尝试平均 token 从 289K 降到 151K，单任务平均费用降约 58%–60%，全球前端编程盲测 Code Arena 排第 6。API 缓存命中价 0.075 美元/百万 token（国内 0.5 元），系列中小尺寸模型将陆续开源。", comment: "点评：这一代的卖点已不是分数高低，而是完成一个任务要花多少钱——token 效率正在取代参数规模，成为厂商之间唯一可比的硬指标。" },
+      { level: "key", tag: "模型与产品发布", heading: "Google 放 Gemini 4 Hydrogen：100 万上下文内统一 1.5 美元", detail: "11 月 12 日，Google 发布 Gemini 4 Hydrogen，接替 Gemini 3.8 Flash 成为日常执行档：100 万 token 上下文内统一计价，输入 1.50 美元/百万、输出 7.50 美元/百万，并新增高于 high 的 xhigh 思考档。Artificial Analysis 在发布当天独立实测，xhigh 档 54 分，比 Claude Sonnet 5.5（max）与 GPT-6.1 Sol（max）各低 1 分。同日在 Antigravity 推出 Orchestrator，在同一会话里于 Carbon 与 Hydrogen 之间动态切换，Google 称 Terminal-Bench 4.0 上接近 Carbon 成功率、平均额度少 24%、速度快 19%。", comment: "点评：「贵模型做规划、便宜模型做执行」从一个调度技巧变成了产品内置能力，成本优化权正从用户手里被厂商收回去。" },
+      { level: "key", tag: "AI 工具与效率玩法", heading: "OpenAI 上线 ChatGPT Wallet：智能体代付，每笔都要刷脸", detail: "11 月 13 日，OpenAI 联合美国运通、万事达、Visa 推出 ChatGPT Wallet，先向美国 18 岁以上的 Pro 订阅用户开放，由 dots 智能体发起购买。用户逐笔核对商户、商品、总额与所选卡片，并用 Face ID 或指纹授权；支付网络下发一次性支付令牌替代真实卡号，商家和智能体都拿不到卡信息，原卡权益与争议保护保留。OpenAI 称 ChatGPT 每周 12 亿用户中大量在比价、选品，钱包把流程从「帮你选」接到「替你付」，初期不抽佣，并同步发布商家接入指南。", comment: "点评：技术不难，难在责任划分——货错了、价变了、重复扣款算谁的，OpenAI 在条款里先把最终核验责任留给了用户。" },
+      { level: "key", tag: "行业与资本", heading: "OpenAI 以 1.25 万亿美元估值完成 150 亿美元融资", detail: "据 CNBC 11 月 12 日报道，OpenAI 以 1.25 万亿美元估值完成 150 亿美元融资，其中包含 11 月 6 日首关的约 110 亿美元，阿联酋投资方与 Coatue 领投，公司尚未正式公告。这一数字低于其最初寻求的 300 亿美元、1.4 万亿美元估值。同一周内，Anthropic 正在以约 1.4 万亿美元完全稀释估值上限路演，两家头部实验室的私募定价第一次被摆进同一个坐标系。", comment: "点评：私募给 OpenAI 的折价，与 Anthropic 敢把定价交给公开市场，其实是同一件事的两面——钱不再无条件为「最大」付溢价。" },
+      { level: "brief", tag: "AI 工具与效率玩法", heading: "Claude Code 上线实验性 Code Mode", detail: "11 月 12 日发布的 v2.1.323 让模型写一段 JavaScript 把多次工具调用打包执行，减少每一步回模型的往返延迟与 token，同时修掉符号链接写入绕过、cp/mv 目标检查缺失等 300 余处 Bash 沙箱问题。" },
+      { level: "brief", tag: "AI 工具与效率玩法", heading: "Cursor Projects 转为多人协作", detail: "11 月 10 日转 beta：每位成员保留自己的协调器与工作 agent，但共享文档、决策和一张标注每个任务对应 PR 的任务板，agent 之间可互相通信，在改动冲突之前发现重叠。" },
+      { level: "brief", tag: "AI 工具与效率玩法", heading: "Google 放出 Gemini Decisions API", detail: "11 月 11 日上线 gemini-decision-1，单次调用可提交最多 1000 个是/否、选项或评分问题，输入 0.10 美元/百万 token、输出不计费，官方称延迟 150–250 ms，适合做智能体里的路由、审核与打分环节。" },
+      { level: "brief", tag: "模型与产品发布", heading: "Anthropic 把 Claude 直接搬进办公流程", detail: "11 月 10 日至 12 日，Claude Sheets 与 Whiteboards 进 beta、Claude Dashboards 转正为 Claude Data，Claude Meetings 以 beta 身份进入 Google Meet 参会记要，自托管版 Managed Agents 同时开启私测。" },
+      { level: "brief", tag: "行业与资本", heading: "Mercor 以 200 亿美元估值完成 7.5 亿美元 D 轮", detail: "11 月 10 日宣布，本轮包含员工老股转让、并非全部为新发行股份，公司成立不足四年，做的是把人类专家接入模型的训练与评测环节，估值已超过多数模型层公司。" },
+      { level: "brief", tag: "行业与资本", heading: "Agile Robots 融资 5 亿美元，估值 85 亿美元", detail: "11 月 12 日宣布 F 轮，软银领投，英伟达、日立与 T.Capital 参投，累计融资达 20 亿美元，已在汽车、电子、物流部署超 2 万套工业机器人方案。" },
+      { level: "brief", tag: "行业与资本", heading: "LangChain 以 30 亿美元估值完成 3 亿美元 C 轮", detail: "CapitalG 领投，资金投向智能体的运行、评估与治理平台——卖的是「怎么管住 agent」，而不是「agent 有多强」。" },
+      { level: "brief", tag: "研究突破", heading: "LitExtract 把材料文献自动整理成因果图", detail: "11 月 11 日《npj Computational Materials》刊出该框架，串起文档解析、图像理解与大模型抽取，再按文献统计证据和领域约束构建有向无环图，在钛合金文献上重建出成分—工艺—组织—性能路径。" },
+      { level: "brief", tag: "研究突破", heading: "ProTEUS 把蛋白质定向演化做成闭环", detail: "11 月 9 日提交 arXiv 的预印本用突变分辨的世界模型接上自动化湿实验，在枯草杆菌蔗糖酶上经三轮反馈拿到活性 14.03 倍的三突变体，整个优化用不到 100 次物理测定。" },
+      { level: "brief", tag: "研究突破", heading: "蛋白-配体基础模型出现零样本能力", detail: "11 月 11 日的 arXiv 预印本 Bonbon 用约 3.2 万亿 token 的蛋白-配体配对序列训练，未做任务微调即在 9 个疾病靶点的前瞻湿实验中拿到 61.5% 剂量反应命中率，冻结表征做亲和预测比共折叠方法快 5 个数量级。" }
+    ]
+  },
+  {
     vol: 7,
     date: "2026-10-26",
     headline: "资本向头部两家集中，模型能力向低价扩散",
